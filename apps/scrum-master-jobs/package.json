@@ -29,6 +29,8 @@
 		"@ai-sdk/svelte": "^4.0.3",
 		"@jobboard/types": "workspace:*",
 		"@jobboard/utils": "workspace:*",
+		"@supabase/ssr": "^0.8.0",
+		"@supabase/supabase-js": "^2.89.0",
 		"@tailwindcss/typography": "^0.5.19",
 		"@tailwindcss/vite": "^4.1.18",
 		"ai": "^6.0.3",

@@ -20,29 +20,11 @@
  */
 
 // ============================================
-// TYPE DEFINITIONS
+// TYPE DEFINITIONS (from @jobboard/types)
 // ============================================
 
-/**
- * Community entity type
- * Represents a community/group within the platform
- */
-export interface Community {
-	/** Unique identifier (used in URLs: /c/{id}) */
-	id: string;
-	/** Display name */
-	name: string;
-	/** Icon image URL (displayed in CommunityIconBar) */
-	icon: string;
-	/** Brand color (hex format) */
-	color: string;
-	/** Short description of the community */
-	description: string;
-	/** Total member count */
-	membersCount: number;
-	/** Total posts/articles count */
-	postsCount: number;
-}
+import type { Community } from '@jobboard/types';
+export type { Community };
 
 // ============================================
 // MOCK DATA
