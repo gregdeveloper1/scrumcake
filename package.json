@@ -1,5 +1,5 @@
 {
-  "name": "jobboard-platform",
+  "name": "jobs-community",
   "private": true,
   "scripts": {
     "dev": "turbo dev",
