@@ -1,0 +1,1183 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:is(.dark *));
+
+@font-face {
+	font-family: "Geist";
+	src: url("/fonts/geist.woff2") format("woff2");
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Geist Mono";
+	src: url("/fonts/geist-mono.woff2") format("woff2");
+	font-style: normal;
+	font-display: swap;
+}
+
+/* Inter font for Cupertino theme (closest to SF Pro on web) */
+@font-face {
+	font-family: "Inter";
+	src: url("https://cdn.jsdelivr.net/fontsource/fonts/inter:vf@latest/latin-wght-normal.woff2") format("woff2-variations");
+	font-weight: 100 900;
+	font-style: normal;
+	font-display: swap;
+}
+
+/* JetBrains Mono for JetBrains theme */
+@font-face {
+	font-family: "JetBrains Mono";
+	src: url("https://cdn.jsdelivr.net/fontsource/fonts/jetbrains-mono:vf@latest/latin-wght-normal.woff2") format("woff2-variations");
+	font-weight: 100 800;
+	font-style: normal;
+	font-display: swap;
+}
+
+/* CursorGothic for Cursor theme */
+@font-face {
+	font-family: "CursorGothic";
+	src: url("https://raw.githubusercontent.com/imjac0b/CursorGothic/main/fonts/CursorGothic-Regular.woff2") format("woff2");
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "CursorGothic";
+	src: url("https://raw.githubusercontent.com/imjac0b/CursorGothic/main/fonts/CursorGothic-Bold.woff2") format("woff2");
+	font-weight: 700;
+	font-style: normal;
+	font-display: swap;
+}
+
+/* Product Sans / Google Sans for JetBrains theme */
+@font-face {
+	font-family: "Product Sans";
+	src: url("https://fonts.cdnfonts.com/s/14955/ProductSans-Regular.woff") format("woff");
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Product Sans";
+	src: url("https://fonts.cdnfonts.com/s/14955/ProductSans-Medium.woff") format("woff");
+	font-weight: 500;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Product Sans";
+	src: url("https://fonts.cdnfonts.com/s/14955/ProductSans-Bold.woff") format("woff");
+	font-weight: 700;
+	font-style: normal;
+	font-display: swap;
+}
+
+/* Airbnb Cereal for AirBnB theme - all weights from jsDelivr CDN */
+@font-face {
+	font-family: "Airbnb Cereal";
+	src: url("https://cdn.jsdelivr.net/npm/airbnbcereal@1.1.0/AirbnbCerealApp-Light.woff2") format("woff2");
+	font-weight: 300;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Airbnb Cereal";
+	src: url("https://cdn.jsdelivr.net/npm/airbnbcereal@1.1.0/AirbnbCerealApp-Book.woff2") format("woff2");
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Airbnb Cereal";
+	src: url("https://cdn.jsdelivr.net/npm/airbnbcereal@1.1.0/AirbnbCerealApp-Medium.woff2") format("woff2");
+	font-weight: 500;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Airbnb Cereal";
+	src: url("https://cdn.jsdelivr.net/npm/airbnbcereal@1.1.0/AirbnbCerealApp-Bold.woff2") format("woff2");
+	font-weight: 700;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Airbnb Cereal";
+	src: url("https://cdn.jsdelivr.net/npm/airbnbcereal@1.1.0/AirbnbCerealApp-ExtraBold.woff2") format("woff2");
+	font-weight: 800;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Airbnb Cereal";
+	src: url("https://cdn.jsdelivr.net/npm/airbnbcereal@1.1.0/AirbnbCerealApp-Black.woff2") format("woff2");
+	font-weight: 900;
+	font-style: normal;
+	font-display: swap;
+}
+
+@theme inline {
+	--font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
+	--font-mono: "SF Mono", SFMono-Regular, ui-monospace, "Geist Mono", monospace;
+	--radius-sm: calc(var(--radius) - 4px);
+	--radius-md: calc(var(--radius) - 2px);
+	--radius-lg: var(--radius);
+	--radius-xl: calc(var(--radius) + 4px);
+	--color-background: var(--background);
+	--color-foreground: var(--foreground);
+	--color-card: var(--card);
+	--color-card-foreground: var(--card-foreground);
+	--color-popover: var(--popover);
+	--color-popover-foreground: var(--popover-foreground);
+	--color-primary: var(--primary);
+	--color-primary-foreground: var(--primary-foreground);
+	--color-secondary: var(--secondary);
+	--color-secondary-foreground: var(--secondary-foreground);
+	--color-muted: var(--muted);
+	--color-muted-foreground: var(--muted-foreground);
+	--color-accent: var(--accent);
+	--color-accent-foreground: var(--accent-foreground);
+	--color-destructive: var(--destructive);
+	--color-border: var(--border);
+	--color-input: var(--input);
+	--color-ring: var(--ring);
+	--color-sidebar: var(--sidebar);
+	--color-sidebar-foreground: var(--sidebar-foreground);
+	--color-sidebar-primary: var(--sidebar-primary);
+	--color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+	--color-sidebar-accent: var(--sidebar-accent);
+	--color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+	--color-sidebar-border: var(--sidebar-border);
+	--color-sidebar-ring: var(--sidebar-ring);
+}
+
+/* ============================================
+   CODE BLOCK STYLING - SF Mono Light
+   ============================================ */
+code,
+pre,
+pre code,
+.prose code,
+.prose pre {
+	font-family: var(--font-mono);
+	font-weight: 500; /* Medium weight */
+	font-size: 0.9em;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+pre {
+	padding: 1rem;
+	border-radius: var(--radius);
+	background-color: var(--muted);
+	overflow-x: auto;
+}
+
+code:not(pre code) {
+	padding: 0.2em 0.4em;
+	border-radius: 0.25rem;
+	background-color: var(--muted);
+}
+
+/* ============================================
+   ZINC THEME - Classic Black & White
+   ============================================ */
+:root,
+[data-theme="zinc"] {
+	--font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
+	--radius: 0.625rem;
+	--background: oklch(1 0 0);
+	--foreground: oklch(0.145 0 0);
+	--card: oklch(1 0 0);
+	--card-foreground: oklch(0.145 0 0);
+	--popover: oklch(1 0 0);
+	--popover-foreground: oklch(0.145 0 0);
+	--primary: oklch(0.205 0 0);
+	--primary-foreground: oklch(0.985 0 0);
+	--secondary: oklch(0.97 0 0);
+	--secondary-foreground: oklch(0.205 0 0);
+	--muted: oklch(0.97 0 0);
+	--muted-foreground: oklch(0.556 0 0);
+	--accent: oklch(0.97 0 0);
+	--accent-foreground: oklch(0.205 0 0);
+	--destructive: oklch(0.577 0.245 27.325);
+	--border: oklch(0.922 0 0);
+	--input: oklch(0.922 0 0);
+	--ring: oklch(0.708 0 0);
+	--sidebar: oklch(0.985 0 0);
+	--sidebar-foreground: oklch(0.145 0 0);
+	--sidebar-primary: oklch(0.205 0 0);
+	--sidebar-primary-foreground: oklch(0.985 0 0);
+	--sidebar-accent: oklch(0.97 0 0);
+	--sidebar-accent-foreground: oklch(0.205 0 0);
+	--sidebar-border: oklch(0.922 0 0);
+	--sidebar-ring: oklch(0.708 0 0);
+}
+
+/* ============================================
+   CURSOR THEME - Warm Cream
+   ============================================ */
+[data-theme="cursor"] {
+	--font-sans: "CursorGothic", "Geist", ui-sans-serif, system-ui, sans-serif;
+	--radius: 0.75rem;
+	/* Warm cream background like Cursor */
+	--background: oklch(0.975 0.005 85);
+	--foreground: oklch(0.15 0.01 60);
+	/* Slightly warmer card */
+	--card: oklch(0.985 0.003 85);
+	--card-foreground: oklch(0.15 0.01 60);
+	--popover: oklch(0.99 0.002 85);
+	--popover-foreground: oklch(0.15 0.01 60);
+	/* Dark charcoal primary */
+	--primary: oklch(0.18 0.01 60);
+	--primary-foreground: oklch(0.98 0.003 85);
+	/* Warm secondary */
+	--secondary: oklch(0.94 0.008 85);
+	--secondary-foreground: oklch(0.18 0.01 60);
+	/* Warm muted tones */
+	--muted: oklch(0.94 0.008 85);
+	--muted-foreground: oklch(0.5 0.01 60);
+	--accent: oklch(0.92 0.01 85);
+	--accent-foreground: oklch(0.18 0.01 60);
+	--destructive: oklch(0.577 0.245 27.325);
+	/* Subtle warm borders */
+	--border: oklch(0.90 0.01 85);
+	--input: oklch(0.92 0.008 85);
+	--ring: oklch(0.5 0.01 60);
+	/* Sidebar - slightly different warmth */
+	--sidebar: oklch(0.97 0.006 85);
+	--sidebar-foreground: oklch(0.15 0.01 60);
+	--sidebar-primary: oklch(0.18 0.01 60);
+	--sidebar-primary-foreground: oklch(0.98 0.003 85);
+	--sidebar-accent: oklch(0.93 0.008 85);
+	--sidebar-accent-foreground: oklch(0.18 0.01 60);
+	--sidebar-border: oklch(0.90 0.01 85);
+	--sidebar-ring: oklch(0.5 0.01 60);
+}
+
+/* ============================================
+   AIRBNB THEME - Clean White with Pink Accent
+   ============================================ */
+[data-theme="airbnb"] {
+	--radius: 0.75rem;
+	/* Pure white background */
+	--background: oklch(1 0 0);
+	--foreground: oklch(0.13 0 0);
+	/* White cards */
+	--card: oklch(1 0 0);
+	--card-foreground: oklch(0.13 0 0);
+	--popover: oklch(1 0 0);
+	--popover-foreground: oklch(0.13 0 0);
+	/* Airbnb Pink primary */
+	--primary: oklch(0.65 0.25 12);
+	--primary-foreground: oklch(1 0 0);
+	/* Light gray secondary */
+	--secondary: oklch(0.97 0 0);
+	--secondary-foreground: oklch(0.13 0 0);
+	/* Muted grays */
+	--muted: oklch(0.96 0 0);
+	--muted-foreground: oklch(0.45 0 0);
+	--accent: oklch(0.97 0 0);
+	--accent-foreground: oklch(0.13 0 0);
+	--destructive: oklch(0.65 0.25 12);
+	/* Light borders */
+	--border: oklch(0.92 0 0);
+	--input: oklch(0.96 0 0);
+	--ring: oklch(0.65 0.25 12);
+	/* Sidebar */
+	--sidebar: oklch(0.99 0 0);
+	--sidebar-foreground: oklch(0.13 0 0);
+	--sidebar-primary: oklch(0.65 0.25 12);
+	--sidebar-primary-foreground: oklch(1 0 0);
+	--sidebar-accent: oklch(0.97 0 0);
+	--sidebar-accent-foreground: oklch(0.13 0 0);
+	--sidebar-border: oklch(0.94 0 0);
+	--sidebar-ring: oklch(0.65 0.25 12);
+}
+
+/* ============================================
+   CATPPUCCIN THEME - Mocha (Soothing Pastel Dark)
+   ============================================ */
+[data-theme="catppuccin"] {
+	--font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
+	--radius: 0.75rem;
+	/* Catppuccin Mocha colors */
+	--background: oklch(0.24 0.02 280);
+	--foreground: oklch(0.9 0.02 280);
+	--card: oklch(0.22 0.02 280);
+	--card-foreground: oklch(0.9 0.02 280);
+	--popover: oklch(0.2 0.02 280);
+	--popover-foreground: oklch(0.9 0.02 280);
+	/* Lavender primary */
+	--primary: oklch(0.8 0.1 290);
+	--primary-foreground: oklch(0.2 0.02 280);
+	/* Surface colors */
+	--secondary: oklch(0.32 0.02 280);
+	--secondary-foreground: oklch(0.9 0.02 280);
+	--muted: oklch(0.32 0.02 280);
+	--muted-foreground: oklch(0.7 0.02 280);
+	--accent: oklch(0.35 0.02 280);
+	--accent-foreground: oklch(0.9 0.02 280);
+	/* Mauve for destructive */
+	--destructive: oklch(0.65 0.2 0);
+	/* Overlay borders */
+	--border: oklch(0.4 0.02 280);
+	--input: oklch(0.35 0.02 280);
+	--ring: oklch(0.8 0.1 290);
+	/* Sidebar */
+	--sidebar: oklch(0.2 0.02 280);
+	--sidebar-foreground: oklch(0.9 0.02 280);
+	--sidebar-primary: oklch(0.8 0.1 290);
+	--sidebar-primary-foreground: oklch(0.2 0.02 280);
+	--sidebar-accent: oklch(0.32 0.02 280);
+	--sidebar-accent-foreground: oklch(0.9 0.02 280);
+	--sidebar-border: oklch(0.35 0.02 280);
+	--sidebar-ring: oklch(0.8 0.1 290);
+}
+
+/* ============================================
+   MIDNIGHT THEME - Deep Blue Night
+   ============================================ */
+[data-theme="midnight"] {
+	--font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
+	--radius: 0.625rem;
+	/* Deep navy background */
+	--background: oklch(0.15 0.03 250);
+	--foreground: oklch(0.95 0.01 250);
+	--card: oklch(0.18 0.03 250);
+	--card-foreground: oklch(0.95 0.01 250);
+	--popover: oklch(0.16 0.03 250);
+	--popover-foreground: oklch(0.95 0.01 250);
+	/* Bright blue primary */
+	--primary: oklch(0.7 0.15 250);
+	--primary-foreground: oklch(0.15 0.03 250);
+	/* Slate blues */
+	--secondary: oklch(0.25 0.03 250);
+	--secondary-foreground: oklch(0.95 0.01 250);
+	--muted: oklch(0.25 0.03 250);
+	--muted-foreground: oklch(0.65 0.03 250);
+	--accent: oklch(0.28 0.04 250);
+	--accent-foreground: oklch(0.95 0.01 250);
+	--destructive: oklch(0.6 0.2 25);
+	/* Blue-tinted borders */
+	--border: oklch(0.3 0.03 250);
+	--input: oklch(0.25 0.03 250);
+	--ring: oklch(0.7 0.15 250);
+	/* Sidebar */
+	--sidebar: oklch(0.13 0.03 250);
+	--sidebar-foreground: oklch(0.95 0.01 250);
+	--sidebar-primary: oklch(0.7 0.15 250);
+	--sidebar-primary-foreground: oklch(0.15 0.03 250);
+	--sidebar-accent: oklch(0.22 0.03 250);
+	--sidebar-accent-foreground: oklch(0.95 0.01 250);
+	--sidebar-border: oklch(0.25 0.03 250);
+	--sidebar-ring: oklch(0.7 0.15 250);
+}
+
+/* ============================================
+   CUPERTINO THEME - Apple iOS Inspired
+   Font: Inter (closest to SF Pro on web)
+   Colors: iOS system colors from Human Interface Guidelines
+   Research: https://developer.apple.com/design/human-interface-guidelines/color
+   ============================================ */
+[data-theme="cupertino"] {
+	/* SF Pro on Apple devices, falls back to system fonts elsewhere */
+	--font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif;
+	--radius: 0.75rem;
+	/* iOS uses very clean white backgrounds */
+	--background: oklch(1 0 0);
+	--foreground: oklch(0 0 0);
+	/* Cards with subtle warmth like iOS grouped backgrounds */
+	--card: oklch(1 0 0);
+	--card-foreground: oklch(0 0 0);
+	--popover: oklch(1 0 0);
+	--popover-foreground: oklch(0 0 0);
+	/* iOS systemBlue #007AFF as primary */
+	--primary: oklch(0.55 0.24 255);
+	--primary-foreground: oklch(1 0 0);
+	/* iOS systemGray6 #F2F2F7 for secondary */
+	--secondary: oklch(0.96 0.005 280);
+	--secondary-foreground: oklch(0 0 0);
+	/* iOS grouped background gray */
+	--muted: oklch(0.96 0.005 280);
+	--muted-foreground: oklch(0.45 0.01 280);
+	--accent: oklch(0.96 0.005 280);
+	--accent-foreground: oklch(0 0 0);
+	/* iOS systemRed #FF3B30 */
+	--destructive: oklch(0.6 0.25 25);
+	/* iOS uses very subtle borders - systemGray5 #E5E5EA */
+	--border: oklch(0.92 0.005 280);
+	--input: oklch(0.96 0.005 280);
+	--ring: oklch(0.55 0.24 255);
+	/* Sidebar - iOS secondary background */
+	--sidebar: oklch(0.96 0.005 280);
+	--sidebar-foreground: oklch(0 0 0);
+	--sidebar-primary: oklch(0.55 0.24 255);
+	--sidebar-primary-foreground: oklch(1 0 0);
+	--sidebar-accent: oklch(0.92 0.005 280);
+	--sidebar-accent-foreground: oklch(0 0 0);
+	--sidebar-border: oklch(0.92 0.005 280);
+	--sidebar-ring: oklch(0.55 0.24 255);
+}
+
+/* Cupertino Dark Mode - iOS Dark Appearance */
+[data-theme="cupertino"].dark,
+.dark [data-theme="cupertino"] {
+	/* iOS dark mode uses true black for OLED */
+	--background: oklch(0 0 0);
+	--foreground: oklch(1 0 0);
+	/* Elevated surfaces in iOS dark mode */
+	--card: oklch(0.17 0.005 280);
+	--card-foreground: oklch(1 0 0);
+	--popover: oklch(0.17 0.005 280);
+	--popover-foreground: oklch(1 0 0);
+	/* iOS systemBlue dark mode #0A84FF */
+	--primary: oklch(0.62 0.22 255);
+	--primary-foreground: oklch(0 0 0);
+	/* iOS systemGray5 dark #2C2C2E */
+	--secondary: oklch(0.24 0.005 280);
+	--secondary-foreground: oklch(1 0 0);
+	--muted: oklch(0.24 0.005 280);
+	--muted-foreground: oklch(0.6 0.01 280);
+	--accent: oklch(0.28 0.005 280);
+	--accent-foreground: oklch(1 0 0);
+	/* iOS systemRed dark #FF453A */
+	--destructive: oklch(0.65 0.25 25);
+	/* iOS dark borders - systemGray4 #3A3A3C */
+	--border: oklch(0.3 0.005 280);
+	--input: oklch(0.24 0.005 280);
+	--ring: oklch(0.62 0.22 255);
+	/* Sidebar */
+	--sidebar: oklch(0.12 0.005 280);
+	--sidebar-foreground: oklch(1 0 0);
+	--sidebar-primary: oklch(0.62 0.22 255);
+	--sidebar-primary-foreground: oklch(0 0 0);
+	--sidebar-accent: oklch(0.24 0.005 280);
+	--sidebar-accent-foreground: oklch(1 0 0);
+	--sidebar-border: oklch(0.24 0.005 280);
+	--sidebar-ring: oklch(0.62 0.22 255);
+}
+
+/* ============================================
+   JETBRAINS THEME - Kotlin/Android/Material 3 Inspired
+   Font: JetBrains Mono (monospace), Inter (UI)
+   Colors: Material 3 baseline purple + JetBrains brand accents
+   Research: https://m3.material.io/styles/color/roles
+             https://www.jetbrains.com/company/brand/
+   ============================================ */
+[data-theme="jetbrains"] {
+	--font-sans: "Product Sans", "Google Sans", "Roboto", system-ui, sans-serif;
+	--radius: 0.5rem;
+	/* M3 Surface #FFFBFE - very subtle warm white */
+	--background: oklch(0.995 0.005 330);
+	--foreground: oklch(0.15 0.02 280);
+	/* M3 Surface Container */
+	--card: oklch(0.98 0.008 330);
+	--card-foreground: oklch(0.15 0.02 280);
+	--popover: oklch(0.995 0.005 330);
+	--popover-foreground: oklch(0.15 0.02 280);
+	/* M3 Primary #6750A4 - baseline purple */
+	--primary: oklch(0.5 0.18 290);
+	--primary-foreground: oklch(1 0 0);
+	/* M3 Secondary Container */
+	--secondary: oklch(0.92 0.03 290);
+	--secondary-foreground: oklch(0.25 0.05 290);
+	/* M3 Surface Variant */
+	--muted: oklch(0.94 0.015 290);
+	--muted-foreground: oklch(0.45 0.03 290);
+	/* JetBrains orange accent for hover/active states */
+	--accent: oklch(0.75 0.18 55);
+	--accent-foreground: oklch(0.15 0.02 55);
+	/* M3 Error #B3261E */
+	--destructive: oklch(0.5 0.2 25);
+	/* M3 Outline */
+	--border: oklch(0.82 0.02 290);
+	--input: oklch(0.94 0.015 290);
+	--ring: oklch(0.5 0.18 290);
+	/* Sidebar - M3 Surface Container Low */
+	--sidebar: oklch(0.97 0.01 290);
+	--sidebar-foreground: oklch(0.15 0.02 280);
+	--sidebar-primary: oklch(0.5 0.18 290);
+	--sidebar-primary-foreground: oklch(1 0 0);
+	--sidebar-accent: oklch(0.92 0.03 290);
+	--sidebar-accent-foreground: oklch(0.25 0.05 290);
+	--sidebar-border: oklch(0.88 0.015 290);
+	--sidebar-ring: oklch(0.5 0.18 290);
+}
+
+/* JetBrains Dark Mode - Darcula-inspired with M3 dark surfaces */
+[data-theme="jetbrains"].dark,
+.dark [data-theme="jetbrains"] {
+	/* Darcula background #2B2B2B with slight purple tint */
+	--background: oklch(0.22 0.015 280);
+	--foreground: oklch(0.85 0.02 280);
+	/* Darcula editor panel #3C3F41 */
+	--card: oklch(0.28 0.015 280);
+	--card-foreground: oklch(0.85 0.02 280);
+	--popover: oklch(0.25 0.015 280);
+	--popover-foreground: oklch(0.85 0.02 280);
+	/* M3 Primary dark - lighter purple for contrast */
+	--primary: oklch(0.72 0.15 290);
+	--primary-foreground: oklch(0.18 0.02 290);
+	/* M3 Secondary Container dark */
+	--secondary: oklch(0.35 0.04 290);
+	--secondary-foreground: oklch(0.85 0.03 290);
+	/* Darcula muted surfaces */
+	--muted: oklch(0.32 0.02 280);
+	--muted-foreground: oklch(0.65 0.02 280);
+	/* JetBrains orange/magenta accent #FF841B / #E627F8 */
+	--accent: oklch(0.72 0.2 55);
+	--accent-foreground: oklch(0.18 0.02 55);
+	/* M3 Error dark */
+	--destructive: oklch(0.7 0.18 25);
+	/* Darcula borders */
+	--border: oklch(0.38 0.015 280);
+	--input: oklch(0.32 0.02 280);
+	--ring: oklch(0.72 0.15 290);
+	/* Sidebar - darker Darcula surface */
+	--sidebar: oklch(0.18 0.015 280);
+	--sidebar-foreground: oklch(0.85 0.02 280);
+	--sidebar-primary: oklch(0.72 0.15 290);
+	--sidebar-primary-foreground: oklch(0.18 0.02 290);
+	--sidebar-accent: oklch(0.35 0.04 290);
+	--sidebar-accent-foreground: oklch(0.85 0.03 290);
+	--sidebar-border: oklch(0.32 0.015 280);
+	--sidebar-ring: oklch(0.72 0.15 290);
+}
+
+/* ============================================
+   AIRBNB THEME - Coral & Clean
+   Font: Cereal (Airbnb's brand font) - falls back to Nunito Sans
+   Colors: Airbnb coral (#FF5A5F), clean whites, warm grays
+   ============================================ */
+[data-theme="airbnb"] {
+	--font-sans: "Airbnb Cereal", "Circular", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+	--radius: 0.75rem;
+	/* Clean white background */
+	--background: oklch(1 0 0);
+	--foreground: oklch(0.23 0.01 30);
+	/* Slightly warm card backgrounds */
+	--card: oklch(1 0 0);
+	--card-foreground: oklch(0.23 0.01 30);
+	--popover: oklch(1 0 0);
+	--popover-foreground: oklch(0.23 0.01 30);
+	/* Airbnb Coral/Rausch #FF5A5F as primary */
+	--primary: oklch(0.65 0.2 20);
+	--primary-foreground: oklch(1 0 0);
+	/* Warm gray secondary */
+	--secondary: oklch(0.97 0.005 30);
+	--secondary-foreground: oklch(0.23 0.01 30);
+	/* Soft muted backgrounds */
+	--muted: oklch(0.97 0.005 30);
+	--muted-foreground: oklch(0.5 0.01 30);
+	--accent: oklch(0.97 0.005 30);
+	--accent-foreground: oklch(0.23 0.01 30);
+	/* Error red (darker coral) */
+	--destructive: oklch(0.55 0.22 20);
+	/* Very subtle warm borders */
+	--border: oklch(0.92 0.005 30);
+	--input: oklch(0.97 0.005 30);
+	--ring: oklch(0.65 0.2 20);
+	/* Sidebar - clean white with coral accents */
+	--sidebar: oklch(0.99 0.003 30);
+	--sidebar-foreground: oklch(0.23 0.01 30);
+	--sidebar-primary: oklch(0.65 0.2 20);
+	--sidebar-primary-foreground: oklch(1 0 0);
+	--sidebar-accent: oklch(0.97 0.005 30);
+	--sidebar-accent-foreground: oklch(0.23 0.01 30);
+	--sidebar-border: oklch(0.92 0.005 30);
+	--sidebar-ring: oklch(0.65 0.2 20);
+}
+
+/* Airbnb Dark Mode */
+[data-theme="airbnb"].dark,
+.dark [data-theme="airbnb"] {
+	/* Dark charcoal background */
+	--background: oklch(0.15 0.01 30);
+	--foreground: oklch(0.95 0.01 30);
+	--card: oklch(0.2 0.01 30);
+	--card-foreground: oklch(0.95 0.01 30);
+	--popover: oklch(0.18 0.01 30);
+	--popover-foreground: oklch(0.95 0.01 30);
+	/* Coral stays vibrant in dark mode */
+	--primary: oklch(0.68 0.22 20);
+	--primary-foreground: oklch(0.12 0.01 30);
+	/* Darker secondary */
+	--secondary: oklch(0.25 0.01 30);
+	--secondary-foreground: oklch(0.9 0.01 30);
+	--muted: oklch(0.25 0.01 30);
+	--muted-foreground: oklch(0.6 0.01 30);
+	--accent: oklch(0.25 0.01 30);
+	--accent-foreground: oklch(0.9 0.01 30);
+	--destructive: oklch(0.6 0.2 20);
+	--border: oklch(0.3 0.01 30);
+	--input: oklch(0.22 0.01 30);
+	--ring: oklch(0.68 0.22 20);
+	/* Sidebar dark */
+	--sidebar: oklch(0.12 0.01 30);
+	--sidebar-foreground: oklch(0.9 0.01 30);
+	--sidebar-primary: oklch(0.68 0.22 20);
+	--sidebar-primary-foreground: oklch(0.12 0.01 30);
+	--sidebar-accent: oklch(0.22 0.01 30);
+	--sidebar-accent-foreground: oklch(0.9 0.01 30);
+	--sidebar-border: oklch(0.25 0.01 30);
+	--sidebar-ring: oklch(0.68 0.22 20);
+}
+
+/* ============================================
+   NEOBRUTALISM THEME - Classic Cream
+   Font: Space Grotesk (bold geometric sans)
+   Colors: Cream background, vibrant pink/blue/yellow accents
+   Style: Thick black borders, hard shadows, retro feel
+   ============================================ */
+
+/* Load Space Grotesk font for Neobrutalism theme */
+@font-face {
+	font-family: "Space Grotesk";
+	src: url("https://fonts.gstatic.com/s/spacegrotesk/v16/V8mQoQDjQSkFtoMM3T6r8E7mF71Q-gOoraIAEj7oUXskPMBBSSJLm2E.woff2") format("woff2");
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Space Grotesk";
+	src: url("https://fonts.gstatic.com/s/spacegrotesk/v16/V8mQoQDjQSkFtoMM3T6r8E7mF71Q-gOoraIAEj62UXskPMBBSSJLm2E.woff2") format("woff2");
+	font-weight: 500;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Space Grotesk";
+	src: url("https://fonts.gstatic.com/s/spacegrotesk/v16/V8mQoQDjQSkFtoMM3T6r8E7mF71Q-gOoraIAEj7aVnskPMBBSSJLm2E.woff2") format("woff2");
+	font-weight: 700;
+	font-style: normal;
+	font-display: swap;
+}
+
+[data-theme="neobrutalism"] {
+	--font-sans: "Space Grotesk", "Geist", ui-sans-serif, system-ui, sans-serif;
+	--radius: 0px; /* Sharp corners by default */
+
+	/* Classic Cream Background #FEF6E4 */
+	--background: oklch(0.975 0.015 85);
+	/* Near Black Text #1A1A1A */
+	--foreground: oklch(0.15 0 0);
+
+	/* Paper White Card #FFFDF9 */
+	--card: oklch(0.995 0.008 85);
+	--card-foreground: oklch(0.15 0 0);
+
+	--popover: oklch(0.995 0.008 85);
+	--popover-foreground: oklch(0.15 0 0);
+
+	/* Lavender Pink Primary #FF90E8 */
+	--primary: oklch(0.75 0.2 330);
+	--primary-foreground: oklch(0.15 0 0);
+
+	/* Electric Blue Secondary #3772FF */
+	--secondary: oklch(0.55 0.25 260);
+	--secondary-foreground: oklch(1 0 0);
+
+	/* Muted - lighter cream */
+	--muted: oklch(0.96 0.01 85);
+	--muted-foreground: oklch(0.35 0 0);
+
+	/* Sunny Yellow Accent #FFD803 */
+	--accent: oklch(0.88 0.2 95);
+	--accent-foreground: oklch(0.15 0 0);
+
+	/* Destructive - bold red */
+	--destructive: oklch(0.55 0.25 25);
+
+	/* CRITICAL: Pure Black Borders #000000 */
+	--border: oklch(0 0 0);
+	--input: oklch(0.975 0.015 85);
+	--ring: oklch(0 0 0);
+
+	/* Neobrutalism-specific tokens */
+	--neo-border-width: 4px;
+	--neo-border-width-thick: 5px;
+	--neo-shadow-offset: 5px;
+	--neo-shadow-offset-lg: 6px;
+	--neo-shadow-color: oklch(0 0 0);
+	--neo-radius-chunky: 12px;
+
+	/* Sidebar */
+	--sidebar: oklch(0.98 0.012 85);
+	--sidebar-foreground: oklch(0.15 0 0);
+	--sidebar-primary: oklch(0.75 0.2 330);
+	--sidebar-primary-foreground: oklch(0.15 0 0);
+	--sidebar-accent: oklch(0.88 0.2 95);
+	--sidebar-accent-foreground: oklch(0.15 0 0);
+	--sidebar-border: oklch(0 0 0);
+	--sidebar-ring: oklch(0 0 0);
+}
+
+/* Neobrutalism Dark Mode (optional - maintains brutalist aesthetic) */
+[data-theme="neobrutalism"].dark,
+.dark [data-theme="neobrutalism"] {
+	--background: oklch(0.18 0.01 85);
+	--foreground: oklch(0.95 0.01 85);
+	--card: oklch(0.22 0.01 85);
+	--card-foreground: oklch(0.95 0.01 85);
+	--popover: oklch(0.22 0.01 85);
+	--popover-foreground: oklch(0.95 0.01 85);
+	--primary: oklch(0.78 0.22 330);
+	--primary-foreground: oklch(0.15 0 0);
+	--secondary: oklch(0.6 0.25 260);
+	--secondary-foreground: oklch(1 0 0);
+	--muted: oklch(0.28 0.01 85);
+	--muted-foreground: oklch(0.65 0.01 85);
+	--accent: oklch(0.85 0.18 95);
+	--accent-foreground: oklch(0.15 0 0);
+	--destructive: oklch(0.6 0.22 25);
+	--border: oklch(0.95 0.01 85);
+	--input: oklch(0.25 0.01 85);
+	--ring: oklch(0.95 0.01 85);
+	--neo-shadow-color: oklch(0.95 0.01 85);
+	--sidebar: oklch(0.15 0.01 85);
+	--sidebar-foreground: oklch(0.95 0.01 85);
+	--sidebar-border: oklch(0.95 0.01 85);
+}
+
+/* ============================================
+   DARK MODE (works with both themes)
+   ============================================ */
+.dark {
+	--background: oklch(0.145 0 0);
+	--foreground: oklch(0.985 0 0);
+	--card: oklch(0.145 0 0);
+	--card-foreground: oklch(0.985 0 0);
+	--popover: oklch(0.145 0 0);
+	--popover-foreground: oklch(0.985 0 0);
+	--primary: oklch(0.985 0 0);
+	--primary-foreground: oklch(0.205 0 0);
+	--secondary: oklch(0.269 0 0);
+	--secondary-foreground: oklch(0.985 0 0);
+	--muted: oklch(0.269 0 0);
+	--muted-foreground: oklch(0.708 0 0);
+	--accent: oklch(0.269 0 0);
+	--accent-foreground: oklch(0.985 0 0);
+	--destructive: oklch(0.704 0.191 22.216);
+	--border: oklch(0.269 0 0);
+	--input: oklch(0.269 0 0);
+	--ring: oklch(0.556 0 0);
+	--sidebar: oklch(0.205 0 0);
+	--sidebar-foreground: oklch(0.985 0 0);
+	--sidebar-primary: oklch(0.985 0 0);
+	--sidebar-primary-foreground: oklch(0.205 0 0);
+	--sidebar-accent: oklch(0.269 0 0);
+	--sidebar-accent-foreground: oklch(0.985 0 0);
+	--sidebar-border: oklch(0.269 0 0);
+	--sidebar-ring: oklch(0.556 0 0);
+}
+
+[data-theme="cursor"].dark {
+	--background: oklch(0.12 0.01 60);
+	--foreground: oklch(0.95 0.005 85);
+	--card: oklch(0.15 0.01 60);
+	--card-foreground: oklch(0.95 0.005 85);
+	--popover: oklch(0.15 0.01 60);
+	--popover-foreground: oklch(0.95 0.005 85);
+	--primary: oklch(0.95 0.005 85);
+	--primary-foreground: oklch(0.12 0.01 60);
+	--secondary: oklch(0.22 0.01 60);
+	--secondary-foreground: oklch(0.95 0.005 85);
+	--muted: oklch(0.22 0.01 60);
+	--muted-foreground: oklch(0.65 0.01 85);
+	--accent: oklch(0.22 0.01 60);
+	--accent-foreground: oklch(0.95 0.005 85);
+	--destructive: oklch(0.704 0.191 22.216);
+	--border: oklch(0.25 0.01 60);
+	--input: oklch(0.25 0.01 60);
+	--ring: oklch(0.5 0.01 85);
+	--sidebar: oklch(0.14 0.01 60);
+	--sidebar-foreground: oklch(0.95 0.005 85);
+	--sidebar-primary: oklch(0.95 0.005 85);
+	--sidebar-primary-foreground: oklch(0.12 0.01 60);
+	--sidebar-accent: oklch(0.22 0.01 60);
+	--sidebar-accent-foreground: oklch(0.95 0.005 85);
+	--sidebar-border: oklch(0.25 0.01 60);
+	--sidebar-ring: oklch(0.5 0.01 85);
+}
+
+/* Base styles */
+* {
+	@apply border-border;
+}
+
+body {
+	@apply bg-background text-foreground antialiased;
+	font-family: var(--font-sans);
+}
+
+/* ============================================
+   AIRBNB-INSPIRED DESIGN SYSTEM
+   ============================================ */
+
+/* Signature Airbnb pink accent */
+:root {
+	--airbnb-pink: oklch(0.65 0.25 12);
+	--airbnb-pink-hover: oklch(0.55 0.25 12);
+	--airbnb-pink-light: oklch(0.95 0.05 12);
+}
+
+/* Enhanced shadows for depth */
+.shadow-airbnb {
+	box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.shadow-airbnb-sm {
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.shadow-airbnb-lg {
+	box-shadow: 0 8px 28px rgba(0, 0, 0, 0.15);
+}
+
+/* Hover lift effect */
+.hover-lift {
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hover-lift:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* Pink accent button */
+.btn-pink {
+	background: var(--airbnb-pink);
+	color: white;
+	border: none;
+	transition: background 0.2s ease;
+}
+
+.btn-pink:hover {
+	background: var(--airbnb-pink-hover);
+}
+
+/* Pill shapes */
+.pill {
+	border-radius: 9999px;
+}
+
+/* Card image rounded top */
+.card-image-top {
+	border-radius: var(--radius) var(--radius) 0 0;
+}
+
+/* Heart favorite button */
+.heart-btn {
+	transition: transform 0.15s ease;
+}
+
+.heart-btn:hover {
+	transform: scale(1.1);
+}
+
+.heart-btn:active {
+	transform: scale(0.95);
+}
+
+/* Smooth image zoom on hover */
+.image-zoom {
+	overflow: hidden;
+}
+
+.image-zoom img {
+	transition: transform 0.3s ease;
+}
+
+.image-zoom:hover img {
+	transform: scale(1.05);
+}
+
+/* Search bar pill style */
+.search-pill {
+	border-radius: 9999px;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.05);
+	border: 1px solid var(--border);
+	transition: box-shadow 0.2s ease;
+}
+
+.search-pill:hover {
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Category pills */
+.category-pill {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.75rem 1rem;
+	border-bottom: 2px solid transparent;
+	color: var(--muted-foreground);
+	transition: all 0.2s ease;
+}
+
+.category-pill:hover {
+	color: var(--foreground);
+	border-bottom-color: var(--border);
+}
+
+.category-pill.active {
+	color: var(--foreground);
+	border-bottom-color: var(--foreground);
+}
+
+/* Badge/tag style */
+.badge-airbnb {
+	background: var(--foreground);
+	color: var(--background);
+	font-size: 0.75rem;
+	font-weight: 600;
+	padding: 0.25rem 0.5rem;
+	border-radius: 0.25rem;
+}
+
+/* Auto-hide scrollbars - show on hover */
+html,
+body,
+.overflow-y-auto,
+.overflow-x-auto,
+.overflow-auto {
+	scrollbar-width: thin; /* Firefox */
+	scrollbar-color: transparent transparent; /* Firefox - hidden by default */
+}
+
+html:hover,
+body:hover,
+.overflow-y-auto:hover,
+.overflow-x-auto:hover,
+.overflow-auto:hover {
+	scrollbar-color: var(--border) transparent; /* Firefox - show on hover */
+}
+
+/* Webkit (Chrome, Safari, Edge) */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+.overflow-y-auto::-webkit-scrollbar,
+.overflow-x-auto::-webkit-scrollbar,
+.overflow-auto::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+
+html::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track,
+.overflow-y-auto::-webkit-scrollbar-track,
+.overflow-x-auto::-webkit-scrollbar-track,
+.overflow-auto::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb,
+.overflow-y-auto::-webkit-scrollbar-thumb,
+.overflow-x-auto::-webkit-scrollbar-thumb,
+.overflow-auto::-webkit-scrollbar-thumb {
+	background: transparent;
+	border-radius: 4px;
+	transition: background 0.2s ease;
+}
+
+html:hover::-webkit-scrollbar-thumb,
+body:hover::-webkit-scrollbar-thumb,
+.overflow-y-auto:hover::-webkit-scrollbar-thumb,
+.overflow-x-auto:hover::-webkit-scrollbar-thumb,
+.overflow-auto:hover::-webkit-scrollbar-thumb {
+	background: var(--border);
+}
+
+html::-webkit-scrollbar-thumb:hover,
+body::-webkit-scrollbar-thumb:hover,
+.overflow-y-auto::-webkit-scrollbar-thumb:hover,
+.overflow-x-auto::-webkit-scrollbar-thumb:hover,
+.overflow-auto::-webkit-scrollbar-thumb:hover {
+	background: var(--muted-foreground);
+}
+
+/* ============================================
+   MOBILE SAFE AREA SUPPORT
+   ============================================ */
+.safe-area-bottom {
+	padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+	.safe-area-bottom {
+		padding-bottom: env(safe-area-inset-bottom);
+	}
+}
+
+/* ============================================
+   NEOBRUTALISM DESIGN SYSTEM UTILITIES
+   ============================================ */
+
+/* Hard Shadow Utilities - No blur, solid black offset */
+.shadow-neo {
+	box-shadow: var(--neo-shadow-offset, 5px) var(--neo-shadow-offset, 5px) 0 0 var(--neo-shadow-color, #000);
+}
+
+.shadow-neo-sm {
+	box-shadow: 3px 3px 0 0 var(--neo-shadow-color, #000);
+}
+
+.shadow-neo-lg {
+	box-shadow: var(--neo-shadow-offset-lg, 6px) var(--neo-shadow-offset-lg, 6px) 0 0 var(--neo-shadow-color, #000);
+}
+
+/* Inverted shadow for pressed state */
+.shadow-neo-pressed {
+	box-shadow: 0 0 0 0 var(--neo-shadow-color, #000);
+	transform: translate(var(--neo-shadow-offset, 5px), var(--neo-shadow-offset, 5px));
+}
+
+/* Thick Border Utilities */
+.border-neo {
+	border: var(--neo-border-width, 4px) solid var(--border);
+}
+
+.border-neo-thick {
+	border: var(--neo-border-width-thick, 5px) solid var(--border);
+}
+
+/* Neobrutalist Button Press Animation */
+.btn-neo-press {
+	transition: transform 0.1s ease, box-shadow 0.1s ease;
+	box-shadow: var(--neo-shadow-offset, 5px) var(--neo-shadow-offset, 5px) 0 0 var(--neo-shadow-color, #000);
+}
+
+.btn-neo-press:hover {
+	box-shadow: calc(var(--neo-shadow-offset, 5px) + 1px) calc(var(--neo-shadow-offset, 5px) + 1px) 0 0 var(--neo-shadow-color, #000);
+	transform: translate(-1px, -1px);
+}
+
+.btn-neo-press:active {
+	box-shadow: 0 0 0 0 var(--neo-shadow-color, #000);
+	transform: translate(var(--neo-shadow-offset, 5px), var(--neo-shadow-offset, 5px));
+}
+
+/* Offset Card Effect - Colored background layer visible behind */
+.card-neo-offset {
+	position: relative;
+}
+
+.card-neo-offset::before {
+	content: '';
+	position: absolute;
+	top: var(--neo-shadow-offset, 5px);
+	left: var(--neo-shadow-offset, 5px);
+	width: 100%;
+	height: 100%;
+	background: var(--primary);
+	border: var(--neo-border-width, 4px) solid var(--border);
+	border-radius: var(--neo-radius-chunky, 12px);
+	z-index: -1;
+}
+
+/* Alternative offset colors */
+.card-neo-offset-blue::before {
+	background: var(--secondary);
+}
+
+.card-neo-offset-yellow::before {
+	background: var(--accent);
+}
+
+/* Chunky Radius (for cards that want rounded corners) */
+.rounded-neo {
+	border-radius: var(--neo-radius-chunky, 12px);
+}
+
+/* Sharp corners (default for neobrutalism) */
+.rounded-neo-sharp {
+	border-radius: 0;
+}
+
+/* Wiggle animation for playful elements */
+@keyframes neo-wiggle {
+	0%, 100% { transform: rotate(0deg); }
+	25% { transform: rotate(-2deg); }
+	75% { transform: rotate(2deg); }
+}
+
+.animate-neo-wiggle {
+	animation: neo-wiggle 0.3s ease-in-out;
+}
+
+.hover\:animate-neo-wiggle:hover {
+	animation: neo-wiggle 0.3s ease-in-out;
+}
+
+/* Bounce on hover */
+@keyframes neo-bounce {
+	0%, 100% { transform: translateY(0); }
+	50% { transform: translateY(-4px); }
+}
+
+.hover\:animate-neo-bounce:hover {
+	animation: neo-bounce 0.4s ease;
+}
+
+/* Neobrutalism Focus Ring - Thick and visible */
+.focus-neo:focus-visible {
+	outline: var(--neo-border-width, 4px) solid var(--border);
+	outline-offset: 2px;
+}
+
+/* Badge pill with hard border */
+.badge-neo {
+	display: inline-flex;
+	align-items: center;
+	padding: 0.25rem 0.75rem;
+	font-weight: 600;
+	font-size: 0.75rem;
+	text-transform: uppercase;
+	letter-spacing: 0.025em;
+	border: var(--neo-border-width, 4px) solid var(--border);
+	box-shadow: 2px 2px 0 0 var(--neo-shadow-color, #000);
+}
+
+.badge-neo-pink {
+	background: var(--primary);
+	color: var(--primary-foreground);
+}
+
+.badge-neo-blue {
+	background: var(--secondary);
+	color: var(--secondary-foreground);
+}
+
+.badge-neo-yellow {
+	background: var(--accent);
+	color: var(--accent-foreground);
+}
+
+/* Input with chunky styling */
+.input-neo {
+	border: var(--neo-border-width, 4px) solid var(--border);
+	background: var(--background);
+	padding: 0.75rem 1rem;
+	font-weight: 500;
+	transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.input-neo:focus {
+	box-shadow: var(--neo-shadow-offset, 5px) var(--neo-shadow-offset, 5px) 0 0 var(--neo-shadow-color, #000);
+	outline: none;
+}

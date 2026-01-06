@@ -1,0 +1,23 @@
+{
+  "name": "@jobboard/utils",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "svelte": "./src/index.ts",
+  "exports": {
+    ".": {
+      "svelte": "./src/index.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "scripts": {
+    "check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^3.3.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.0"
+  }
+}
