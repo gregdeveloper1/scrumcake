@@ -1,0 +1,7 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "cd apps/scrum-master-jobs && pnpm run build",
+  "installCommand": "pnpm install",
+  "outputDirectory": "apps/scrum-master-jobs/.svelte-kit",
+  "framework": "sveltekit"
+}
