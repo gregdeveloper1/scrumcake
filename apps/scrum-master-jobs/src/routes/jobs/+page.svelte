@@ -16,7 +16,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { setActiveSection } from '$lib/stores/navigation.svelte';
-	import { jobs } from '$lib/data/jobs';
 	import type { Job, LocationType, EmploymentType, ExperienceLevel } from '$lib/data/jobs';
 
 	// Components
@@ -24,6 +23,13 @@
 	import JobDetail from '$lib/components/jobs/JobDetail.svelte';
 	import JobFilters from '$lib/components/jobs/JobFilters.svelte';
 	import * as ScrollArea from '$lib/components/ui/scroll-area';
+
+	// Page data from server
+	import type { PageData } from './$types';
+	let { data } = $props<{ data: PageData }>();
+
+	// Jobs from server (database or mock fallback)
+	let jobs = $derived(data.jobs);
 
 	// Set active section on mount
 	onMount(() => {
@@ -42,7 +48,7 @@
 
 	// Filtered jobs
 	let filteredJobs = $derived(() => {
-		return jobs.filter((job) => {
+		return (jobs ?? []).filter((job) => {
 			// Search filter
 			if (searchQuery) {
 				const query = searchQuery.toLowerCase();
@@ -81,7 +87,7 @@
 	// Selected job object
 	let selectedJob = $derived<Job | null>(() => {
 		if (!selectedJobId) return filteredJobs().length > 0 ? filteredJobs()[0] : null;
-		return jobs.find((job) => job.id === selectedJobId) ?? null;
+		return (jobs ?? []).find((job) => job.id === selectedJobId) ?? null;
 	});
 
 	// Auto-select first job when filters change

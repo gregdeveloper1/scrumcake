@@ -38,6 +38,8 @@
 	import ThemeSwitcher from '$lib/components/ThemeSwitcher.svelte';
 	import { Button } from '$lib/components/ui/button';
 	import * as Tooltip from '$lib/components/ui/tooltip';
+	import * as Avatar from '$lib/components/ui/avatar';
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 
 	// State management
 	import {
@@ -50,12 +52,13 @@
 	// Utilities
 	import { cn } from '$lib/utils';
 
+	// Page data (session/user from +layout.server.ts)
+	import type { LayoutData } from './$types';
+	let { data, children } = $props<{ data: LayoutData; children: any }>();
+
 	// ============================================
 	// COMPONENT STATE
 	// ============================================
-
-	/** Snippet for rendering child routes (pages) */
-	let { children } = $props();
 
 	/** Reference to main scrollable element for scroll restoration */
 	let mainElement: HTMLElement;
@@ -409,9 +412,74 @@
 				<!-- Vertical Divider - Hidden on mobile -->
 				<div class="hidden sm:block w-px h-6 bg-border mx-1"></div>
 
-				<!-- Authentication Buttons -->
-				<Button variant="ghost" size="sm" class="rounded-full px-3 md:px-4 font-medium text-sm">Log in</Button>
-				<Button variant="outline" size="sm" class="hidden sm:inline-flex rounded-full px-5 font-medium border-2 border-foreground hover:bg-foreground hover:text-background transition-colors">Sign up</Button>
+				<!-- Authentication: Show user menu if logged in, otherwise show login/signup -->
+				{#if data.user}
+					<DropdownMenu.Root>
+						<DropdownMenu.Trigger>
+							{#snippet child({ props })}
+								<button {...props} class="flex items-center gap-2 rounded-full p-1 hover:bg-accent transition-colors">
+									<Avatar.Root class="h-8 w-8">
+										<Avatar.Image src={data.user?.user_metadata?.avatar_url} alt={data.user?.email ?? 'User'} />
+										<Avatar.Fallback class="bg-primary text-primary-foreground text-sm">
+											{(data.user?.email?.[0] ?? 'U').toUpperCase()}
+										</Avatar.Fallback>
+									</Avatar.Root>
+								</button>
+							{/snippet}
+						</DropdownMenu.Trigger>
+						<DropdownMenu.Content align="end" class="w-56">
+							<DropdownMenu.Label>
+								<div class="flex flex-col">
+									<span class="font-medium">{data.user?.user_metadata?.name ?? data.user?.email?.split('@')[0]}</span>
+									<span class="text-xs text-muted-foreground">{data.user?.email}</span>
+								</div>
+							</DropdownMenu.Label>
+							<DropdownMenu.Separator />
+							<DropdownMenu.Item href="/profile">
+								<svg class="mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+									<path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+									<circle cx="12" cy="7" r="4"/>
+								</svg>
+								Profile
+							</DropdownMenu.Item>
+							<DropdownMenu.Item href="/bookmarks">
+								<svg class="mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+									<path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/>
+								</svg>
+								Saved Jobs
+							</DropdownMenu.Item>
+							<DropdownMenu.Item href="/settings">
+								<svg class="mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+									<path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
+									<circle cx="12" cy="12" r="3"/>
+								</svg>
+								Settings
+							</DropdownMenu.Item>
+							<DropdownMenu.Separator />
+							<form action="/auth/signout" method="POST">
+								<DropdownMenu.Item>
+									{#snippet child({ props })}
+										<button {...props} type="submit" class="w-full flex items-center text-destructive">
+											<svg class="mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+												<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+												<polyline points="16 17 21 12 16 7"/>
+												<line x1="21" x2="9" y1="12" y2="12"/>
+											</svg>
+											Sign out
+										</button>
+									{/snippet}
+								</DropdownMenu.Item>
+							</form>
+						</DropdownMenu.Content>
+					</DropdownMenu.Root>
+				{:else}
+					<a href="/login">
+						<Button variant="ghost" size="sm" class="rounded-full px-3 md:px-4 font-medium text-sm">Log in</Button>
+					</a>
+					<a href="/signup" class="hidden sm:inline-flex">
+						<Button variant="outline" size="sm" class="rounded-full px-5 font-medium border-2 border-foreground hover:bg-foreground hover:text-background transition-colors">Sign up</Button>
+					</a>
+				{/if}
 			</div>
 		</header>
 
