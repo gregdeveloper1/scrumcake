@@ -53,7 +53,7 @@ export const communities: Community[] = [
 	{
 		id: 'design',
 		name: 'Design',
-		icon: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=40&h=40&fit=crop',
+		icon: 'https://rptregzonzdcnaheupcp.supabase.co/storage/v1/object/public/icons/community-1.jpg',
 		color: '#FF6B6B',
 		description: 'A community for designers sharing their work and knowledge.',
 		membersCount: 85000,
@@ -62,7 +62,7 @@ export const communities: Community[] = [
 	{
 		id: 'webdev',
 		name: 'WebDev',
-		icon: 'https://images.unsplash.com/photo-1627398242454-45a1465c2479?w=40&h=40&fit=crop',
+		icon: 'https://rptregzonzdcnaheupcp.supabase.co/storage/v1/object/public/icons/community-2.jpg',
 		color: '#4ECDC4',
 		description: 'Everything web development - HTML, CSS, JavaScript, and beyond.',
 		membersCount: 320000,
@@ -71,7 +71,7 @@ export const communities: Community[] = [
 	{
 		id: 'javascript',
 		name: 'JavaScript',
-		icon: 'https://images.unsplash.com/photo-1579468118864-1b9ea3c0db4a?w=40&h=40&fit=crop',
+		icon: 'https://rptregzonzdcnaheupcp.supabase.co/storage/v1/object/public/icons/community-3.jpg',
 		color: '#F7DF1E',
 		description: 'The JavaScript community - from basics to advanced topics.',
 		membersCount: 280000,
@@ -80,7 +80,7 @@ export const communities: Community[] = [
 	{
 		id: 'python',
 		name: 'Python',
-		icon: 'https://images.unsplash.com/photo-1526379095098-d400fd0bf935?w=40&h=40&fit=crop',
+		icon: 'https://rptregzonzdcnaheupcp.supabase.co/storage/v1/object/public/icons/community-4.jpg',
 		color: '#3776AB',
 		description: 'Python programming community for beginners and experts alike.',
 		membersCount: 195000,

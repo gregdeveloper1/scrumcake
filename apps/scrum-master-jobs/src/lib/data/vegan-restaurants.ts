@@ -36,8 +36,8 @@ export const veganRestaurants: VeganRestaurant[] = [
 		rating: 4.8,
 		reviewCount: 342,
 		images: [
-			'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&h=300&fit=crop',
-			'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&h=300&fit=crop'
+			'https://rptregzonzdcnaheupcp.supabase.co/storage/v1/object/public/restaurants/restaurant-1.jpg',
+			'https://rptregzonzdcnaheupcp.supabase.co/storage/v1/object/public/restaurants/restaurant-2.jpg'
 		],
 		features: ['Outdoor Seating', 'Takeout', 'Delivery'],
 		isNew: false,
@@ -59,8 +59,8 @@ export const veganRestaurants: VeganRestaurant[] = [
 		rating: 4.9,
 		reviewCount: 521,
 		images: [
-			'https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=400&h=300&fit=crop',
-			'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&h=300&fit=crop'
+			'https://rptregzonzdcnaheupcp.supabase.co/storage/v1/object/public/restaurants/restaurant-3.jpg',
+			'https://rptregzonzdcnaheupcp.supabase.co/storage/v1/object/public/restaurants/restaurant-4.jpg'
 		],
 		features: ['Fine Dining', 'Lake View', 'Full Bar'],
 		isNew: false,
@@ -82,8 +82,8 @@ export const veganRestaurants: VeganRestaurant[] = [
 		rating: 4.6,
 		reviewCount: 892,
 		images: [
-			'https://images.unsplash.com/photo-1525351484163-7529414344d8?w=400&h=300&fit=crop',
-			'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=400&h=300&fit=crop'
+			'https://rptregzonzdcnaheupcp.supabase.co/storage/v1/object/public/restaurants/restaurant-5.jpg',
+			'https://rptregzonzdcnaheupcp.supabase.co/storage/v1/object/public/restaurants/restaurant-6.jpg'
 		],
 		features: ['Breakfast All Day', 'Pet Friendly', 'Wifi'],
 		isNew: false,
@@ -105,8 +105,8 @@ export const veganRestaurants: VeganRestaurant[] = [
 		rating: 4.7,
 		reviewCount: 445,
 		images: [
-			'https://images.unsplash.com/photo-1552332386-f8dd00dc2f85?w=400&h=300&fit=crop',
-			'https://images.unsplash.com/photo-1565299507177-b0ac66763828?w=400&h=300&fit=crop'
+			'https://rptregzonzdcnaheupcp.supabase.co/storage/v1/object/public/restaurants/restaurant-7.jpg',
+			'https://rptregzonzdcnaheupcp.supabase.co/storage/v1/object/public/restaurants/restaurant-8.jpg'
 		],
 		features: ['Food Truck', 'Tacos', 'Late Night'],
 		isNew: false,
@@ -128,8 +128,8 @@ export const veganRestaurants: VeganRestaurant[] = [
 		rating: 4.5,
 		reviewCount: 678,
 		images: [
-			'https://images.unsplash.com/photo-1559314809-0d155014e29e?w=400&h=300&fit=crop',
-			'https://images.unsplash.com/photo-1569562211093-4ed0d0758f12?w=400&h=300&fit=crop'
+			'https://rptregzonzdcnaheupcp.supabase.co/storage/v1/object/public/restaurants/restaurant-9.jpg',
+			'https://rptregzonzdcnaheupcp.supabase.co/storage/v1/object/public/restaurants/restaurant-10.jpg'
 		],
 		features: ['Cooking Classes', 'Market', 'Catering'],
 		isNew: false,
@@ -151,8 +151,8 @@ export const veganRestaurants: VeganRestaurant[] = [
 		rating: 4.7,
 		reviewCount: 234,
 		images: [
-			'https://images.unsplash.com/photo-1551218808-94e220e084d2?w=400&h=300&fit=crop',
-			'https://images.unsplash.com/photo-1546793665-c74683f339c1?w=400&h=300&fit=crop'
+			'https://rptregzonzdcnaheupcp.supabase.co/storage/v1/object/public/restaurants/restaurant-11.jpg',
+			'https://rptregzonzdcnaheupcp.supabase.co/storage/v1/object/public/restaurants/restaurant-12.jpg'
 		],
 		features: ['Gluten-Free Options', 'Brunch', 'Cocktails'],
 		isNew: true,
@@ -174,8 +174,8 @@ export const veganRestaurants: VeganRestaurant[] = [
 		rating: 4.9,
 		reviewCount: 1203,
 		images: [
-			'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=400&h=300&fit=crop',
-			'https://images.unsplash.com/photo-1553621042-f6e147245754?w=400&h=300&fit=crop'
+			'https://rptregzonzdcnaheupcp.supabase.co/storage/v1/object/public/restaurants/restaurant-13.jpg',
+			'https://rptregzonzdcnaheupcp.supabase.co/storage/v1/object/public/restaurants/restaurant-14.jpg'
 		],
 		features: ["Omakase", "Chef's Table", 'Reservations Required'],
 		isNew: false,
@@ -197,8 +197,8 @@ export const veganRestaurants: VeganRestaurant[] = [
 		rating: 4.4,
 		reviewCount: 567,
 		images: [
-			'https://images.unsplash.com/photo-1622597467836-f3285f2131b8?w=400&h=300&fit=crop',
-			'https://images.unsplash.com/photo-1610970881699-44a5587cabec?w=400&h=300&fit=crop'
+			'https://rptregzonzdcnaheupcp.supabase.co/storage/v1/object/public/restaurants/restaurant-15.jpg',
+			'https://rptregzonzdcnaheupcp.supabase.co/storage/v1/object/public/restaurants/restaurant-16.jpg'
 		],
 		features: ['Smoothie Bowls', 'Cleanses', 'Quick Service'],
 		isNew: false,
@@ -220,8 +220,8 @@ export const veganRestaurants: VeganRestaurant[] = [
 		rating: 4.6,
 		reviewCount: 289,
 		images: [
-			'https://images.unsplash.com/photo-1585325701165-351af916e581?w=400&h=300&fit=crop',
-			'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&h=300&fit=crop'
+			'https://rptregzonzdcnaheupcp.supabase.co/storage/v1/object/public/restaurants/restaurant-17.jpg',
+			'https://rptregzonzdcnaheupcp.supabase.co/storage/v1/object/public/restaurants/restaurant-18.jpg'
 		],
 		features: ['Fried Chicken', 'Mac & Cheese', 'Comfort Food'],
 		isNew: true,
@@ -243,8 +243,8 @@ export const veganRestaurants: VeganRestaurant[] = [
 		rating: 4.8,
 		reviewCount: 756,
 		images: [
-			'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=400&h=300&fit=crop',
-			'https://images.unsplash.com/photo-1550547660-d9450f859349?w=400&h=300&fit=crop'
+			'https://rptregzonzdcnaheupcp.supabase.co/storage/v1/object/public/restaurants/restaurant-19.jpg',
+			'https://rptregzonzdcnaheupcp.supabase.co/storage/v1/object/public/restaurants/restaurant-20.jpg'
 		],
 		features: ['Burgers', 'Food Truck', 'Late Night'],
 		isNew: false,
@@ -266,8 +266,8 @@ export const veganRestaurants: VeganRestaurant[] = [
 		rating: 4.3,
 		reviewCount: 1456,
 		images: [
-			'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop',
-			'https://images.unsplash.com/photo-1464219789935-c2d9d9aba644?w=400&h=300&fit=crop'
+			'https://rptregzonzdcnaheupcp.supabase.co/storage/v1/object/public/restaurants/restaurant-21.jpg',
+			'https://rptregzonzdcnaheupcp.supabase.co/storage/v1/object/public/restaurants/restaurant-22.jpg'
 		],
 		features: ['24/7', 'Pancakes', 'Family Friendly'],
 		isNew: false,
@@ -289,8 +289,8 @@ export const veganRestaurants: VeganRestaurant[] = [
 		rating: 4.7,
 		reviewCount: 198,
 		images: [
-			'https://images.unsplash.com/photo-1540914124281-342587941389?w=400&h=300&fit=crop',
-			'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=300&fit=crop'
+			'https://rptregzonzdcnaheupcp.supabase.co/storage/v1/object/public/restaurants/restaurant-23.jpg',
+			'https://rptregzonzdcnaheupcp.supabase.co/storage/v1/object/public/restaurants/restaurant-24.jpg'
 		],
 		features: ['Seasonal Menu', 'Wine Bar', 'Private Events'],
 		isNew: true,
@@ -312,8 +312,8 @@ export const veganRestaurants: VeganRestaurant[] = [
 		rating: 4.6,
 		reviewCount: 923,
 		images: [
-			'https://images.unsplash.com/photo-1599974579688-8dbdd335c77f?w=400&h=300&fit=crop',
-			'https://images.unsplash.com/photo-1604467707321-70c0d646bf0d?w=400&h=300&fit=crop'
+			'https://rptregzonzdcnaheupcp.supabase.co/storage/v1/object/public/restaurants/restaurant-25.jpg',
+			'https://rptregzonzdcnaheupcp.supabase.co/storage/v1/object/public/restaurants/restaurant-1.jpg'
 		],
 		features: ['Migas Tacos', 'Breakfast', 'Food Truck'],
 		isNew: false,
@@ -335,8 +335,8 @@ export const veganRestaurants: VeganRestaurant[] = [
 		rating: 4.8,
 		reviewCount: 312,
 		images: [
-			'https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d?w=400&h=300&fit=crop',
-			'https://images.unsplash.com/photo-1505575967455-40e256f73376?w=400&h=300&fit=crop'
+			'https://rptregzonzdcnaheupcp.supabase.co/storage/v1/object/public/restaurants/restaurant-27.jpg',
+			'https://rptregzonzdcnaheupcp.supabase.co/storage/v1/object/public/restaurants/restaurant-28.jpg'
 		],
 		features: ['Artisan Cheese', 'Wine Pairing', 'Cheese Boards'],
 		isNew: false,
@@ -358,8 +358,8 @@ export const veganRestaurants: VeganRestaurant[] = [
 		rating: 4.5,
 		reviewCount: 187,
 		images: [
-			'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=400&h=300&fit=crop',
-			'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop'
+			'https://rptregzonzdcnaheupcp.supabase.co/storage/v1/object/public/restaurants/restaurant-29.jpg',
+			'https://rptregzonzdcnaheupcp.supabase.co/storage/v1/object/public/restaurants/restaurant-30.jpg'
 		],
 		features: ['Meal Prep', 'Catering', 'Organic'],
 		isNew: false,
