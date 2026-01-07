@@ -1,0 +1,39 @@
+# docker-compose.yml for local development
+# Usage: docker compose up
+
+version: '3.8'
+
+services:
+  vapor-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - SUPABASE_JWT_SECRET=${SUPABASE_JWT_SECRET}
+      - API_KEYS=${API_KEYS}
+      - LOG_LEVEL=debug
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Optional: Local PostgreSQL for testing (instead of Supabase)
+  # postgres:
+  #   image: postgres:15-alpine
+  #   ports:
+  #     - "5432:5432"
+  #   environment:
+  #     POSTGRES_USER: vapor
+  #     POSTGRES_PASSWORD: vapor
+  #     POSTGRES_DB: jobboard
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+
+# volumes:
+#   postgres_data:

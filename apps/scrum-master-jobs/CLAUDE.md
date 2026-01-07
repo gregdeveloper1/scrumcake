@@ -13,6 +13,21 @@ npm run check    # Type checking
 
 ---
 
+## Vercel Deployment
+
+**Important:** Remote builds fail with error 127. Use prebuilt deployment:
+
+```bash
+# Build locally then deploy prebuilt output
+vercel build && vercel deploy --prebuilt --prod
+```
+
+- Uses `@sveltejs/adapter-vercel` (not adapter-auto)
+- Live URL: https://scrumcake.vercel.app
+- Alias: https://scrum-master-jobs.vercel.app
+
+---
+
 ## CRITICAL: Svelte 5 Runes (NOT Svelte 4)
 
 ```svelte

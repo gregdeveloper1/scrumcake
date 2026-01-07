@@ -1,7 +1,7 @@
 # JobBoard Platform - Turborepo Monorepo
 
 ## Overview
-Multi-site job board ecosystem with 5 independent, sellable sites sharing infrastructure.
+Multi-site job board ecosystem with independent, sellable sites sharing infrastructure.
 
 ```bash
 pnpm dev                                    # Run all apps
@@ -12,18 +12,222 @@ pnpm check                                  # TypeScript check all
 
 ---
 
-## Structure
+## Live URLs
+
+| Service | URL |
+|---------|-----|
+| **Frontend** | https://scrumcake.vercel.app |
+| **Vapor API** | https://jobboard-vapor-api.fly.dev |
+| **Supabase** | https://rptregzonzdcnaheupcp.supabase.co |
+
+---
+
+## Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                     SvelteKit Frontend                          │
+│                  (apps/scrum-master-jobs)                       │
+│                     Vercel Deployment                           │
+└─────────────────────┬───────────────────────┬───────────────────┘
+                      │                       │
+                      ▼                       ▼
+┌─────────────────────────────┐   ┌───────────────────────────────┐
+│      Supabase (Auth + DB)    │   │      Vapor API (Compute)      │
+│  • User authentication       │   │  • Job listing & search       │
+│  • RLS-protected CRUD        │   │  • Job deduplication          │
+│  • Bookmarks, profiles       │   │  • Matching algorithm         │
+│  • Articles                  │   │  • Bulk import (admin)        │
+│                              │   │  • Full-text search           │
+│  supabase.co                 │   │  fly.dev                      │
+└─────────────────────────────┘   └───────────────────────────────┘
+                      │                       │
+                      └───────────┬───────────┘
+                                  ▼
+                    ┌─────────────────────────┐
+                    │   Supabase PostgreSQL   │
+                    │   (Shared Database)     │
+                    └─────────────────────────┘
+```
+
+---
+
+## Project Structure
 
 ```
 jobboard-platform/
 ├── apps/
-│   └── scrum-master-jobs/    # SvelteKit app (first site)
+│   └── scrum-master-jobs/       # SvelteKit app (Vercel)
 ├── packages/
-│   ├── types/                # @jobboard/types - Shared interfaces
-│   └── utils/                # @jobboard/utils - cn(), TypeScript utilities
-├── turbo.json                # Turborepo config
-├── pnpm-workspace.yaml       # Workspace config
-└── package.json              # Root scripts
+│   ├── types/                   # @jobboard/types - Shared interfaces
+│   └── utils/                   # @jobboard/utils - cn(), utilities
+├── services/
+│   └── vapor-api/               # Vapor 4 backend (Fly.io)
+│       ├── Package.swift
+│       ├── Dockerfile
+│       ├── fly.toml
+│       └── Sources/App/
+├── turbo.json
+├── pnpm-workspace.yaml
+└── package.json
+```
+
+---
+
+## Quick Start
+
+### Frontend Development
+```bash
+cd apps/scrum-master-jobs
+pnpm dev                         # http://localhost:5173
+```
+
+### Vapor API Development
+```bash
+cd services/vapor-api
+swift build
+swift run App serve              # http://localhost:8080
+curl http://localhost:8080/health
+```
+
+---
+
+## Vapor 4 Backend (`services/vapor-api/`)
+
+### API Endpoints
+
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
+| GET | `/health` | Public | Health check |
+| GET | `/api/v1/jobs` | Public | List jobs (paginated, filtered) |
+| GET | `/api/v1/jobs/:id` | Public | Job by ID |
+| GET | `/api/v1/jobs/slug/:slug` | Public | Job by slug |
+| GET | `/api/v1/jobs/search?q=` | Public | Full-text PostgreSQL search |
+| POST | `/api/v1/jobs/bulk` | API Key | Bulk import with deduplication |
+| DELETE | `/api/v1/jobs/expired` | API Key | Clean expired jobs |
+| GET | `/api/v1/matching/jobs` | JWT | Matched jobs for authenticated user |
+
+### Query Parameters (`/api/v1/jobs`)
+
+| Param | Type | Example |
+|-------|------|---------|
+| `page` | int | `?page=2` |
+| `perPage` | int | `?perPage=10` (max 100) |
+| `locationType` | string | `?locationType=Remote` |
+| `employmentType` | string | `?employmentType=Full-time` |
+| `experienceLevel` | string | `?experienceLevel=Senior` |
+| `skills` | string[] | `?skills=Swift&skills=iOS` |
+| `search` | string | `?search=scrum` |
+
+### Authentication
+
+**Supabase JWT** (for `/matching` endpoints):
+```bash
+curl -H "Authorization: Bearer <supabase-access-token>" \
+  https://jobboard-vapor-api.fly.dev/api/v1/matching/jobs
+```
+
+**API Key** (for admin endpoints):
+```bash
+curl -H "X-API-Key: jobboard-admin-2025" \
+  -X POST https://jobboard-vapor-api.fly.dev/api/v1/jobs/bulk \
+  -d '[{"title": "...", "companyName": "...", ...}]'
+```
+
+### Project Structure
+
+```
+services/vapor-api/Sources/App/
+├── entrypoint.swift              # @main async entry
+├── configure.swift               # DB, JWT, CORS setup
+├── routes.swift                  # Route registration
+├── Controllers/
+│   ├── JobsController.swift      # CRUD + search + bulk import
+│   └── MatchingController.swift  # JWT-protected matching
+├── Models/
+│   ├── Job.swift                 # Fluent model + enums
+│   ├── Company.swift             # Company model
+│   └── Profile.swift             # Profile model (read-only)
+├── Services/
+│   ├── DeduplicationService.swift # SHA-256 content hashing
+│   └── MatchingService.swift      # Job-profile scoring
+├── Middleware/
+│   ├── SupabaseJWTMiddleware.swift # HS256 JWT validation
+│   └── APIKeyMiddleware.swift      # X-API-Key header auth
+└── DTOs/
+    └── JobDTO.swift              # Response types, filters
+```
+
+### Environment Variables
+
+```bash
+# Required
+DATABASE_URL=postgresql://postgres.xxx:password@aws-0-us-west-2.pooler.supabase.com:5432/postgres
+SUPABASE_JWT_SECRET=your-jwt-secret-from-dashboard
+
+# Admin
+API_KEYS=jobboard-admin-2025
+```
+
+### Deployment (Fly.io)
+
+```bash
+cd services/vapor-api
+
+# Deploy
+fly deploy
+
+# Set secrets
+fly secrets set DATABASE_URL="..." SUPABASE_JWT_SECRET="..." API_KEYS="..."
+
+# View logs
+fly logs
+
+# Status
+fly status
+```
+
+### Vapor 5 Migration Notes
+
+All code uses Vapor 5-compatible patterns for easy migration (~Feb 2025):
+- `async/await` exclusively (no EventLoopFuture)
+- `@Sendable` annotations on route handlers
+- `any Database` existential syntax
+- No deprecated APIs
+
+---
+
+## Frontend-API Integration
+
+The SvelteKit frontend fetches jobs from Vapor API with fallback chain:
+
+```
+Vapor API → Supabase Direct → Mock Data
+```
+
+### Jobs Page (`/jobs`)
+
+**File**: `apps/scrum-master-jobs/src/routes/jobs/+page.server.ts`
+
+```typescript
+const VAPOR_API_URL = 'https://jobboard-vapor-api.fly.dev';
+
+// Fetches from Vapor API first, falls back to Supabase
+const response = await fetch(`${VAPOR_API_URL}/api/v1/jobs`);
+const { items, metadata } = await response.json();
+```
+
+**Response shape from Vapor:**
+```json
+{
+  "items": [...],
+  "metadata": {
+    "page": 1,
+    "perPage": 20,
+    "total": 11,
+    "totalPages": 1
+  }
+}
 ```
 
 ---
@@ -31,13 +235,11 @@ jobboard-platform/
 ## Packages
 
 ### @jobboard/types
-Shared TypeScript interfaces:
 ```typescript
 import type { Job, Company, Article, User, Community } from '@jobboard/types';
 ```
 
 ### @jobboard/utils
-Shared utilities:
 ```typescript
 import { cn } from '@jobboard/utils';
 import type { WithoutChild, WithElementRef } from '@jobboard/utils';
@@ -50,8 +252,9 @@ import type { WithoutChild, WithElementRef } from '@jobboard/utils';
 1. Copy `apps/scrum-master-jobs` to `apps/new-site-name`
 2. Update `package.json` name to `@jobboard/new-site-name`
 3. Run `pnpm install`
-4. Create new Supabase project for auth + data
+4. Create new Supabase project or reuse existing
 5. Configure environment variables
+6. Deploy to Vercel
 
 ---
 
@@ -60,115 +263,43 @@ import type { WithoutChild, WithElementRef } from '@jobboard/utils';
 | Command | Description |
 |---------|-------------|
 | `pnpm dev` | Start all dev servers |
-| `pnpm dev --filter @jobboard/scrum-master-jobs` | Start specific app |
 | `pnpm build` | Build all packages and apps |
 | `pnpm check` | TypeScript check |
-| `pnpm clean` | Clean all build artifacts |
+| `swift build` | Build Vapor API |
+| `swift run App serve` | Run Vapor locally |
+| `fly deploy` | Deploy Vapor to Fly.io |
 
 ---
 
-## Tech Stack
-- **Monorepo**: Turborepo + pnpm workspaces
-- **Frontend**: SvelteKit 5, Svelte 5, shadcn-svelte, Tailwind v4
-- **Backend**: Supabase (Auth + Postgres + RLS)
-- **Deployment**: Vercel
-- **Packages**: TypeScript, shared as workspace dependencies
+## Environment Variables
+
+### Frontend (Vercel)
+```
+PUBLIC_SUPABASE_URL=https://rptregzonzdcnaheupcp.supabase.co
+PUBLIC_SUPABASE_ANON_KEY=eyJ...
+```
+
+### Vapor API (Fly.io)
+```
+DATABASE_URL=postgresql://...
+SUPABASE_JWT_SECRET=nwH2fg...
+API_KEYS=jobboard-admin-2025
+```
 
 ---
 
-## Frontend Design System
+## Phase 2 (Deferred)
 
-### Design Principles
-
-1. **Clean & Minimal** - Generous whitespace, clear hierarchy, no visual clutter
-2. **Accessible First** - WCAG 2.1 AA compliance, keyboard navigation, screen reader support
-3. **Responsive** - Mobile-first design, fluid layouts, adaptive components
-4. **Consistent** - Reuse components, follow established patterns, unified spacing scale
-5. **Fast** - Lazy loading, optimized images, minimal JavaScript
-
-### Component Patterns
-
-```svelte
-<!-- Always use shadcn-svelte components -->
-import { Button } from '$lib/components/ui/button';
-import * as Card from '$lib/components/ui/card';
-import * as Avatar from '$lib/components/ui/avatar';
-import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
-
-<!-- Use cn() for conditional classes -->
-import { cn } from '$lib/utils';
-<div class={cn('base-class', condition && 'conditional-class')} />
-```
-
-### Spacing Scale (Tailwind)
-
-| Size | Class | Use Case |
-|------|-------|----------|
-| 4px | `p-1` | Tight spacing (icons, badges) |
-| 8px | `p-2` | Compact elements |
-| 12px | `p-3` | Default component padding |
-| 16px | `p-4` | Card padding, section gaps |
-| 24px | `p-6` | Large section spacing |
-| 32px | `p-8` | Page sections |
-
-### Typography
-
-- **Headings**: `text-3xl font-bold` (h1), `text-2xl font-semibold` (h2), `text-xl font-medium` (h3)
-- **Body**: `text-base` (default), `text-sm` (secondary), `text-xs` (captions)
-- **Colors**: `text-foreground` (primary), `text-muted-foreground` (secondary)
-
-### Color Usage
-
-| Color | Variable | Use Case |
-|-------|----------|----------|
-| Primary | `bg-primary` | CTAs, active states, links |
-| Muted | `bg-muted` | Backgrounds, disabled states |
-| Destructive | `bg-destructive` | Errors, delete actions |
-| Border | `border-border` | Dividers, card borders |
-| Card | `bg-card` | Elevated surfaces |
-
-### Responsive Breakpoints
-
-```css
-sm: 640px   /* Mobile landscape */
-md: 768px   /* Tablets */
-lg: 1024px  /* Desktop */
-xl: 1280px  /* Large desktop */
-```
-
-### Accessibility Checklist
-
-- [ ] All images have `alt` text
-- [ ] Buttons have accessible labels (`aria-label` if icon-only)
-- [ ] Forms have associated labels
-- [ ] Color contrast ratio ≥ 4.5:1
-- [ ] Focus states visible on all interactive elements
-- [ ] Keyboard navigation works (Tab, Enter, Escape)
-
-### Animation Guidelines
-
-- Use `transition-colors` for hover states (150ms default)
-- Use `transition-all` sparingly (can cause layout thrashing)
-- Prefer CSS transitions over JavaScript animations
-- Respect `prefers-reduced-motion` media query
-
----
-
-## Deployment
-
-### URLs
-- **Production**: https://scrumcake.vercel.app
-- **Supabase**: https://rptregzonzdcnaheupcp.supabase.co
-
-### Environment Variables (Vercel)
-```
-PUBLIC_SUPABASE_URL
-PUBLIC_SUPABASE_ANON_KEY
-```
+- [ ] Web scraping with crawl4ai
+- [ ] Background job queues (Redis)
+- [ ] Developer-to-developer matching
+- [ ] Admin dashboard
+- [ ] Email notifications
 
 ---
 
 ## See Also
-- `apps/scrum-master-jobs/CLAUDE.md` - App-specific documentation
+
+- `apps/scrum-master-jobs/CLAUDE.md` - Frontend-specific docs
+- `services/vapor-api/.env.example` - Vapor env template
 - `packages/types/src/` - Type definitions
-- `packages/utils/src/` - Utility functions

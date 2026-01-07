@@ -25,10 +25,10 @@
 import { users } from './users';
 
 // ============================================
-// TYPE DEFINITIONS (from @jobboard/types)
+// TYPE DEFINITIONS
 // ============================================
 
-import type { Article } from '@jobboard/types';
+import type { Article } from '$lib/types';
 export type { Article };
 
 const articleData: Omit<Article, 'author'>[] = [

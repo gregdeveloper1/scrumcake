@@ -1,15 +1,19 @@
 /**
  * Utility Functions
- * ==================
- *
- * Re-exports from @jobboard/utils package.
- * This file maintains backwards compatibility with existing imports.
  */
 
-export { cn } from '@jobboard/utils';
-export type {
-	WithoutChild,
-	WithoutChildren,
-	WithoutChildrenOrChild,
-	WithElementRef
-} from '@jobboard/utils';
+import { clsx, type ClassValue } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+
+/**
+ * Merge and deduplicate Tailwind CSS classes
+ */
+export function cn(...inputs: ClassValue[]): string {
+	return twMerge(clsx(inputs));
+}
+
+// TypeScript utility types for shadcn-svelte components
+export type WithoutChild<T> = T extends { child?: unknown } ? Omit<T, 'child'> : T;
+export type WithoutChildrenOrChild<T> = WithoutChildren<WithoutChild<T>>;
+export type WithoutChildren<T> = T extends { children?: unknown } ? Omit<T, 'children'> : T;
+export type WithElementRef<T, U extends HTMLElement = HTMLElement> = T & { ref?: U | null };

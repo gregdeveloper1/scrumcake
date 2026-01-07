@@ -20,10 +20,10 @@
  */
 
 // ============================================
-// TYPE DEFINITIONS (from @jobboard/types)
+// TYPE DEFINITIONS
 // ============================================
 
-import type { User } from '@jobboard/types';
+import type { User } from '$lib/types';
 export type { User };
 
 export const users: User[] = [

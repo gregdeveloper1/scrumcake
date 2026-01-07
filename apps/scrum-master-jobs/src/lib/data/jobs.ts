@@ -17,7 +17,7 @@
  */
 
 // ============================================
-// TYPE DEFINITIONS (from @jobboard/types)
+// TYPE DEFINITIONS
 // ============================================
 
 import type {
@@ -27,7 +27,7 @@ import type {
 	LocationType,
 	EmploymentType,
 	ExperienceLevel
-} from '@jobboard/types';
+} from '$lib/types';
 
 export type { Job, Company, Salary, LocationType, EmploymentType, ExperienceLevel };
 

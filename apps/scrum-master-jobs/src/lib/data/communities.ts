@@ -20,10 +20,10 @@
  */
 
 // ============================================
-// TYPE DEFINITIONS (from @jobboard/types)
+// TYPE DEFINITIONS
 // ============================================
 
-import type { Community } from '@jobboard/types';
+import type { Community } from '$lib/types';
 export type { Community };
 
 // ============================================
