@@ -1,0 +1,30 @@
+# Dependencies
+node_modules
+**/node_modules
+
+# Build outputs
+.svelte-kit
+.vercel
+dist
+build
+
+# Vapor API (separate deployment)
+services/vapor-api
+
+# Database files
+database
+
+# Test files
+**/*.test.ts
+**/*.spec.ts
+
+# IDE
+.idea
+.vscode
+
+# Git
+.git
+
+# Misc
+*.log
+.DS_Store
