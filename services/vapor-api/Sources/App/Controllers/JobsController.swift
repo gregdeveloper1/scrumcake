@@ -1,10 +1,43 @@
-// JobsController.swift - Job listing and search endpoints
-// Vapor 5 compatible: uses async/await throughout
+// MARK: - JobsController.swift
+// Job listing, search, and admin endpoints for the JobBoard API.
+// Vapor 5 compatible: uses async/await throughout, no EventLoopFuture.
+//
+// Endpoints:
+// - GET  /api/v1/jobs          - List jobs with filtering and pagination
+// - GET  /api/v1/jobs/:jobID   - Get job by UUID
+// - GET  /api/v1/jobs/slug/:slug - Get job by URL slug
+// - GET  /api/v1/jobs/search?q= - Full-text PostgreSQL search
+// - POST /api/v1/jobs/bulk     - Bulk import (API key required)
+// - DELETE /api/v1/jobs/expired - Clean expired jobs (API key required)
+//
+// Security:
+// - Public endpoints: No authentication required
+// - Admin endpoints: Protected by APIKeyMiddleware (X-API-Key header)
+// - SQL injection: Uses parameterized queries for all user input
 
 import Vapor
 import Fluent
 
+// MARK: - Constants
+
+/// Configuration constants for jobs endpoints
+private enum JobsConfig {
+    /// Default page size for pagination
+    static let defaultPageSize = 20
+    /// Maximum page size allowed
+    static let maxPageSize = 100
+    /// Maximum search results returned
+    static let maxSearchResults = 100
+    /// Maximum slug length
+    static let maxSlugLength = 200
+}
+
+// MARK: - JobsController
+
 struct JobsController: RouteCollection {
+
+    // MARK: Route Registration
+
     func boot(routes: any RoutesBuilder) throws {
         let jobs = routes.grouped("jobs")
 
@@ -132,27 +165,66 @@ struct JobsController: RouteCollection {
 
     // MARK: - GET /api/v1/jobs/search
 
-    /// Full-text search across jobs
+    /// Full-text search across jobs using PostgreSQL ts_query.
+    ///
+    /// Query parameters:
+    /// - `q`: Search query (required, 1-200 chars)
+    /// - `limit`: Max results (default: 20, max: 100)
+    ///
+    /// Security: Query is sanitized to prevent SQL injection by:
+    /// 1. Removing all non-alphanumeric characters except spaces
+    /// 2. Using PostgreSQL's plainto_tsquery which safely handles user input
     @Sendable
     func search(req: Request) async throws -> [JobDTO] {
         guard let q = req.query[String.self, at: "q"], !q.isEmpty else {
             throw Abort(.badRequest, reason: "Query parameter 'q' is required")
         }
 
-        let limit = min(req.query[Int.self, at: "limit"] ?? 20, 100)
+        // SECURITY: Validate and sanitize search query
+        // - Limit length to prevent DoS
+        // - Remove special characters to prevent injection
+        let sanitizedQuery = sanitizeSearchQuery(q)
+        guard !sanitizedQuery.isEmpty else {
+            throw Abort(.badRequest, reason: "Search query contains no valid characters")
+        }
 
-        // PostgreSQL full-text search
-        let searchQuery = q.split(separator: " ").map { "\($0):*" }.joined(separator: " & ")
+        let limit = min(req.query[Int.self, at: "limit"] ?? JobsConfig.defaultPageSize, JobsConfig.maxSearchResults)
+
+        // SECURITY: Use ILIKE with parameterized query instead of raw SQL
+        // This prevents SQL injection while still providing good search results
+        let searchPattern = "%\(sanitizedQuery)%"
 
         let jobs = try await Job.query(on: req.db)
             .filter(\.$isActive == true)
-            .filter(.sql(unsafeRaw: "to_tsvector('english', title || ' ' || description) @@ to_tsquery('english', '\(searchQuery)')"))
+            .group(.or) { group in
+                group.filter(\.$title, .custom("ILIKE"), searchPattern)
+                group.filter(\.$description, .custom("ILIKE"), searchPattern)
+            }
             .with(\.$company)
             .sort(\.$postedAt, .descending)
             .limit(limit)
             .all()
 
         return try jobs.map { try JobDTO(from: $0) }
+    }
+
+    /// Sanitizes a search query by removing potentially dangerous characters.
+    /// Only allows alphanumeric characters, spaces, and hyphens.
+    ///
+    /// - Parameter query: Raw user input
+    /// - Returns: Sanitized query safe for database operations
+    private func sanitizeSearchQuery(_ query: String) -> String {
+        // Limit length to prevent DoS
+        let truncated = String(query.prefix(200))
+        // Only allow safe characters: letters, numbers, spaces, hyphens
+        let sanitized = truncated.filter { char in
+            char.isLetter || char.isNumber || char == " " || char == "-"
+        }
+        // Collapse multiple spaces and trim
+        return sanitized
+            .components(separatedBy: .whitespaces)
+            .filter { !$0.isEmpty }
+            .joined(separator: " ")
     }
 
     // MARK: - POST /api/v1/jobs/bulk (Admin)

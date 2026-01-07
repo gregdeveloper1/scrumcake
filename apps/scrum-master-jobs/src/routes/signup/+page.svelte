@@ -2,6 +2,11 @@
 	Signup Page
 	===========
 	Create new account with email/password or OAuth
+
+	Security:
+	- Password validation: 12+ chars, requires complexity
+	- Email validation via HTML5 + Supabase
+	- OAuth redirects validated in callback handler
 -->
 
 <script lang="ts">
@@ -10,6 +15,13 @@
 	import { Button } from '$lib/components/ui/button';
 	import { cn } from '$lib/utils';
 
+	// MARK: - Constants
+
+	/** Minimum password length for security */
+	const MIN_PASSWORD_LENGTH = 12;
+
+	// MARK: - State
+
 	let email = $state('');
 	let password = $state('');
 	let confirmPassword = $state('');
@@ -17,16 +29,47 @@
 	let error = $state('');
 	let success = $state(false);
 
+	// MARK: - Validation
+
+	/**
+	 * Validates password meets security requirements:
+	 * - At least 12 characters
+	 * - Contains at least one uppercase letter
+	 * - Contains at least one lowercase letter
+	 * - Contains at least one number
+	 *
+	 * @returns Error message or null if valid
+	 */
+	function validatePassword(pwd: string): string | null {
+		if (pwd.length < MIN_PASSWORD_LENGTH) {
+			return `Password must be at least ${MIN_PASSWORD_LENGTH} characters`;
+		}
+		if (!/[A-Z]/.test(pwd)) {
+			return 'Password must contain at least one uppercase letter';
+		}
+		if (!/[a-z]/.test(pwd)) {
+			return 'Password must contain at least one lowercase letter';
+		}
+		if (!/[0-9]/.test(pwd)) {
+			return 'Password must contain at least one number';
+		}
+		return null;
+	}
+
+	// MARK: - Event Handlers
+
 	async function handleEmailSignup(e: Event) {
 		e.preventDefault();
 
-		if (password !== confirmPassword) {
-			error = 'Passwords do not match';
+		// SECURITY: Validate password complexity
+		const passwordError = validatePassword(password);
+		if (passwordError) {
+			error = passwordError;
 			return;
 		}
 
-		if (password.length < 6) {
-			error = 'Password must be at least 6 characters';
+		if (password !== confirmPassword) {
+			error = 'Passwords do not match';
 			return;
 		}
 
@@ -153,14 +196,14 @@
 						type="password"
 						bind:value={password}
 						required
-						minlength="6"
+						minlength={MIN_PASSWORD_LENGTH}
 						class={cn(
 							"flex h-11 w-full rounded-lg border border-input bg-background px-4 py-2 text-sm",
 							"placeholder:text-muted-foreground",
 							"focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent",
 							"disabled:cursor-not-allowed disabled:opacity-50"
 						)}
-						placeholder="At least 6 characters"
+						placeholder="Min 12 chars, upper/lower/number"
 					/>
 				</div>
 

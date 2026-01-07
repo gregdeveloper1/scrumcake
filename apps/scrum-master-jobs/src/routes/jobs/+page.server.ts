@@ -3,64 +3,154 @@
  * =====================
  *
  * Fetches jobs from Vapor API (primary) with fallback to Supabase and mock data.
+ *
+ * Data Flow:
+ * 1. Try Vapor API (https://jobboard-vapor-api.fly.dev/api/v1/jobs)
+ * 2. Fallback to Supabase direct query
+ * 3. Fallback to mock data
+ *
+ * The Vapor API response uses camelCase (Swift conventions), while Supabase
+ * uses snake_case. Both are transformed to the frontend Job type.
  */
 
 import type { PageServerLoad } from './$types';
 import { jobs as mockJobs } from '$lib/data/jobs';
 import type { JobWithCompany } from '$lib/supabase/types';
 
-// Vapor API base URL
+// MARK: - Configuration
+
+/** Vapor API base URL (Fly.io deployment) */
 const VAPOR_API_URL = 'https://jobboard-vapor-api.fly.dev';
 
+// MARK: - Vapor API Types
+
+/**
+ * Company data from Vapor API response.
+ * Uses camelCase to match Swift/Vapor naming conventions.
+ */
+interface VaporCompany {
+	id: string;
+	name: string;
+	slug: string;
+	logoURL?: string;
+	website?: string;
+	location?: string;
+	industry?: string;
+	isVerified: boolean;
+}
+
+/**
+ * Salary data from Vapor API response.
+ */
+interface VaporSalary {
+	min: number;
+	max: number;
+	currency: string;
+}
+
+/**
+ * Job data from Vapor API response.
+ * Uses camelCase to match Swift/Vapor naming conventions.
+ */
+interface VaporJob {
+	id: string;
+	title: string;
+	slug: string;
+	description: string;
+	requirements: string[];
+	benefits: string[];
+	skills: string[];
+	location?: string;
+	locationType: string;
+	employmentType: string;
+	experienceLevel: string;
+	salary?: VaporSalary;
+	company?: VaporCompany;
+	postedAt: string;
+	applyURL?: string;
+	isEasyApply: boolean;
+	isFeatured: boolean;
+}
+
+/**
+ * Paginated response from Vapor API.
+ */
+interface VaporJobsResponse {
+	items: VaporJob[];
+	metadata: {
+		page: number;
+		perPage: number;
+		total: number;
+		totalPages: number;
+	};
+}
+
+// MARK: - Data Transformation
+
+/**
+ * Transforms a Vapor API job to the frontend Job type.
+ * Handles missing fields with sensible defaults.
+ */
+function transformVaporJob(job: VaporJob) {
+	return {
+		id: job.id,
+		title: job.title,
+		description: job.description,
+		requirements: job.requirements,
+		benefits: job.benefits,
+		company: {
+			name: job.company?.name ?? 'Unknown Company',
+			logo: job.company?.logoURL ?? '/placeholder-company.png',
+			location: job.company?.location ?? 'Remote',
+			industry: job.company?.industry ?? 'Technology',
+			website: job.company?.website ?? '',
+			description: ''
+		},
+		location: job.location ?? 'Remote',
+		locationType: job.locationType,
+		employmentType: job.employmentType,
+		experienceLevel: job.experienceLevel,
+		salary: job.salary
+			? {
+					min: job.salary.min,
+					max: job.salary.max,
+					currency: job.salary.currency
+				}
+			: undefined,
+		skills: job.skills,
+		postedAt: job.postedAt,
+		applyUrl: job.applyURL ?? '',
+		isEasyApply: job.isEasyApply,
+		isFeatured: job.isFeatured
+	};
+}
+
+// MARK: - Server Load Function
+
 export const load: PageServerLoad = async ({ locals, fetch }) => {
-	// Try Vapor API first
+	// MARK: Try Vapor API First
+
 	try {
 		const response = await fetch(`${VAPOR_API_URL}/api/v1/jobs`);
 
 		if (response.ok) {
-			const data = await response.json();
+			const data: VaporJobsResponse = await response.json();
 
 			// Transform Vapor API response to match frontend Job type
-			const jobs = data.items.map((job: any) => ({
-				id: job.id,
-				title: job.title,
-				description: job.description,
-				requirements: job.requirements,
-				benefits: job.benefits,
-				company: {
-					name: job.company?.name ?? 'Unknown Company',
-					logo: job.company?.logoURL ?? '/placeholder-company.png',
-					location: job.company?.location ?? 'Remote',
-					industry: job.company?.industry ?? 'Technology',
-					website: job.company?.website ?? '',
-					description: ''
-				},
-				location: job.location ?? 'Remote',
-				locationType: job.locationType,
-				employmentType: job.employmentType,
-				experienceLevel: job.experienceLevel,
-				salary: job.salary
-					? {
-							min: job.salary.min,
-							max: job.salary.max,
-							currency: job.salary.currency
-						}
-					: undefined,
-				skills: job.skills,
-				postedAt: job.postedAt,
-				applyUrl: job.applyURL ?? '',
-				isEasyApply: job.isEasyApply,
-				isFeatured: job.isFeatured
-			}));
+			const jobs = data.items.map(transformVaporJob);
 
 			return { jobs, source: 'vapor-api' as const };
 		}
 	} catch (err) {
-		console.error('Vapor API error, falling back to Supabase:', err);
+		// Log error and continue to fallback
+		console.error('[Jobs] Vapor API error, falling back to Supabase:', err);
 	}
 
-	// Fallback to Supabase
+	// MARK: Fallback to Supabase
+
 	try {
+		// Query Supabase directly with RLS (Row Level Security)
+		// Uses snake_case column names (PostgreSQL convention)
 		const { data: dbJobs, error } = await locals.supabase
 			.from('jobs')
 			.select(
@@ -73,14 +163,16 @@ export const load: PageServerLoad = async ({ locals, fetch }) => {
 			.order('posted_at', { ascending: false });
 
 		if (error) {
-			console.error('Error fetching jobs:', error);
+			console.error('[Jobs] Supabase error:', error.message);
 			return { jobs: mockJobs, source: 'mock' as const };
 		}
 
 		if (!dbJobs || dbJobs.length === 0) {
+			// No jobs in database - use mock data for demo
 			return { jobs: mockJobs, source: 'mock' as const };
 		}
 
+		// Transform Supabase response (snake_case) to frontend Job type (camelCase)
 		const jobs = dbJobs.map((job: JobWithCompany) => ({
 			id: job.id,
 			title: job.title,
@@ -116,7 +208,8 @@ export const load: PageServerLoad = async ({ locals, fetch }) => {
 
 		return { jobs, source: 'supabase' as const };
 	} catch (err) {
-		console.error('Error in jobs load:', err);
+		// Final fallback to mock data
+		console.error('[Jobs] Unexpected error:', err);
 		return { jobs: mockJobs, source: 'mock' as const };
 	}
 };
