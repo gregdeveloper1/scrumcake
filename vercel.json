@@ -1,3 +1,7 @@
 {
-  "$schema": "https://openapi.vercel.sh/vercel.json"
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "pnpm --filter @jobboard/scrum-master-jobs build",
+  "installCommand": "pnpm install",
+  "framework": "sveltekit",
+  "outputDirectory": "apps/scrum-master-jobs/.vercel/output"
 }
