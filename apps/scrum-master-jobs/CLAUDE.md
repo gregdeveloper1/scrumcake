@@ -15,16 +15,101 @@ npm run check    # Type checking
 
 ## Vercel Deployment
 
-**Important:** Remote builds fail with error 127. Use prebuilt deployment:
+### Live URLs
+- **Production:** https://scrum-master-jobs.vercel.app
+- **Vapor API:** https://jobboard-vapor-api.fly.dev
+
+### ✅ CORRECT: Prebuilt Deployment (Always Use This)
 
 ```bash
-# Build locally then deploy prebuilt output
-vercel build && vercel deploy --prebuilt --prod
+# Step 1: Build locally (uses @sveltejs/adapter-vercel)
+pnpm run build
+
+# Step 2: Deploy prebuilt output to production
+vercel deploy --prebuilt --prod --yes
+
+# Or combined:
+pnpm run build && vercel deploy --prebuilt --prod --yes
 ```
 
-- Uses `@sveltejs/adapter-vercel` (not adapter-auto)
-- Live URL: https://scrumcake.vercel.app
-- Alias: https://scrum-master-jobs.vercel.app
+**Why this works:**
+- Builds use local pnpm workspace correctly
+- No dependency resolution issues on Vercel's servers
+- Fast deployments (~11 seconds vs 5+ minutes)
+- Avoids Vercel build queue delays
+
+### ❌ DO NOT: Remote Builds in Monorepo
+
+**These approaches fail or cause issues:**
+
+```bash
+# ❌ DON'T: Regular deploy (triggers remote build)
+vercel --prod
+# Problem: Error 127 - svelte-kit command not found
+# Cause: pnpm workspace dependencies not resolved
+
+# ❌ DON'T: Custom install commands with cd
+# vercel.json: "installCommand": "cd ../.. && pnpm install"
+# Problem: Vercel doesn't have access to parent directories
+
+# ❌ DON'T: Deploy from monorepo root without config
+cd /path/to/jobboard-platform && vercel --prod
+# Problem: Uploads 30k+ files, hits Vercel limits
+
+# ❌ DON'T: Use --archive=tgz from root
+vercel --prod --archive=tgz
+# Problem: Uploads 500MB+, builds take forever
+```
+
+### Troubleshooting Stuck Builds
+
+If builds get stuck in "Building" or "Queued" state:
+
+```bash
+# List deployments to find stuck ones
+vercel ls --scope okcrafters scrum-master-jobs
+
+# Remove stuck deployment (unblocks queue)
+vercel remove <deployment-url> --scope okcrafters --yes
+
+# Example:
+vercel remove scrum-master-jobs-abc123-okcrafters.vercel.app --scope okcrafters --yes
+```
+
+### Project Configuration
+
+**svelte.config.js** (correct - no changes needed):
+```javascript
+import adapter from '@sveltejs/adapter-vercel';
+export default {
+  kit: { adapter: adapter() }
+};
+```
+
+**vercel.json** - Keep it minimal or delete entirely:
+```json
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "sveltekit"
+}
+```
+
+Or just delete `vercel.json` - adapter-vercel handles everything.
+
+### Vapor API Deployment (Fly.io)
+
+```bash
+cd services/vapor-api
+fly deploy
+```
+
+### Full Stack Deploy Script
+
+```bash
+# Deploy both frontend and API
+pnpm run build && vercel deploy --prebuilt --prod --yes
+cd ../../services/vapor-api && fly deploy
+```
 
 ---
 
